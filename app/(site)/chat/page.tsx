@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 "use client";
 import { useState, useEffect, useRef } from "react";
 
@@ -10,6 +11,7 @@ export default function Chat({ messages, setMessages }) {
     const [showComparison, setShowComparison] = useState(false);
     const [propertyDetails, setPropertyDetails] = useState({});
     const messagesEndRef = useRef(null);
+
 
     // Auto scroll to bottom when new messages arrive
     const scrollToBottom = () => {
