@@ -3,15 +3,15 @@ export const dynamic = "force-dynamic";
 
 import { useState, useEffect, useRef } from "react";
 
-export default function Chat({ messages, setMessages }) {
+export default function Chat({ messages = [], setMessages = () => { } }) {
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     const [typingMessage, setTypingMessage] = useState("");
-    const [comparisonProperties, setComparisonProperties] = useState([]);
+    const [comparisonProperties, setComparisonProperties] = useState<any[]>([]);
     const [showComparison, setShowComparison] = useState(false);
-    const [propertyDetails, setPropertyDetails] = useState({});
-    const messagesEndRef = useRef(null);
+    const [propertyDetails, setPropertyDetails] = useState<Record<string, any>>({});
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
 
     // Auto scroll to bottom when new messages arrive
