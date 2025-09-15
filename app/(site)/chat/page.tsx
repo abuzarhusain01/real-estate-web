@@ -39,7 +39,7 @@ export default function Chat({ messages, setMessages }) {
     useEffect(() => {
         const fetchPropertyDetails = async (propertyId) => {
             try {
-                const response = await fetch(`http://localhost:5050/api/property/${propertyId}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/property/${propertyId}`);
                 const data = await response.json();
                 setPropertyDetails(prev => ({
                     ...prev,
@@ -138,7 +138,7 @@ export default function Chat({ messages, setMessages }) {
         }, 500);
 
         try {
-            const response = await fetch("http://localhost:5050/chat", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 // ✅ Send only last 5 messages to prevent server overload
