@@ -105,7 +105,7 @@ type Bank = {
 };
 
 async function getBank() {
-    const res = await fetch("http://localhost:3000/api/bank", { cache: "no-store" });
+    const res = await fetch("/api/bank", { cache: "no-store" });
     const data = await res.json();
     if (Array.isArray(data)) return data;
     else if (data.offers && Array.isArray(data.offers)) return data.offers;
