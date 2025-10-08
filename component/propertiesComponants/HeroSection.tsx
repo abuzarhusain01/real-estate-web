@@ -34,6 +34,9 @@ export default function HeroSection({ onFiltersChange, filteredCount = 0 }: Hero
     const [selectedLandmarks, setSelectedLandmarks] = useState<string[]>([]);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
+    // Mobile filter toggle state
+    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
     // Search and price states
     const [searchQuery, setSearchQuery] = useState("");
     const [minPrice, setMinPrice] = useState(0);
@@ -173,7 +176,8 @@ export default function HeroSection({ onFiltersChange, filteredCount = 0 }: Hero
                     </div>
 
                     {/* Hero Content */}
-                    <div className="absolute inset-0 flex flex-col mb-36 items-center justify-center text-center px-4 z-10">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10 
+                mb-0 md:mb-36">
                         <div className="text-white max-w-4xl space-y-6">
                             <p className="text-xl md:text-2xl drop-shadow-lg">Properties</p>
                             <h1 className="text-4xl md:text-7xl leading-tight drop-shadow-lg">
@@ -183,8 +187,9 @@ export default function HeroSection({ onFiltersChange, filteredCount = 0 }: Hero
                         </div>
                     </div>
 
-                    {/* Search & Filter Section */}
-                    <div className="absolute inset-0 flex items-end mb-14 justify-center z-20 px-2 sm:px-4 md:px-10">
+
+                    {/* Search & Filter Section - Desktop */}
+                    <div className="hidden md:flex absolute inset-0 items-end mb-14 justify-center z-20 px-2 sm:px-4 md:px-10">
                         <div className="bg-white bg-opacity-95 rounded-xl shadow-lg p-2 sm:p-3 md:p-4 w-full max-w-[95%] sm:max-w-[93%]">
 
                             {/* Search Bar + Price Range */}
@@ -371,18 +376,18 @@ export default function HeroSection({ onFiltersChange, filteredCount = 0 }: Hero
                                 {/* Landmark Dropdown */}
                                 <div className="relative dropdown-container">
                                     <button
-                                        className={`w-full cursor-pointer p-2 sm:p-3 border border-gray-300 rounded-lg flex justify-between items-center text-xs sm:text-sm ${openDropdown === 'landmark' ? 'ring-2 ring-teal-500' : ''}`}
+                                        className={`w-full p-3 cursor-pointer border border-gray-300 rounded-lg flex justify-between items-center ${openDropdown === 'location' ? 'ring-2 ring-teal-500' : ''}`}
                                         onClick={() => setOpenDropdown(openDropdown === 'landmark' ? null : 'landmark')}
                                     >
                                         <span>Landmark</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                                             <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                         </svg>
                                     </button>
                                     {openDropdown === 'landmark' && (
                                         <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-y-auto text-xs sm:text-sm">
                                             {filterOptions.landmarks.map(landmark => (
-                                                <div key={landmark} className={`px-3 py-1 sm:px-4 sm:py-2 hover:bg-teal-50 cursor-pointer ${selectedLandmarks.includes(landmark) ? 'bg-teal-100' : ''}`} onClick={() => handleLandmarkChange(landmark)}>
+                                                <div key={landmark} className={`px-4 py-2 hover:bg-teal-50 cursor-pointer ${selectedLandmarks.includes(landmark) ? 'bg-teal-100' : ''}`} onClick={() => handleLandmarkChange(landmark)}>
                                                     {landmark}
                                                 </div>
                                             ))}
@@ -410,7 +415,254 @@ export default function HeroSection({ onFiltersChange, filteredCount = 0 }: Hero
                         </div>
                     </div>
                 </div>
+
+                {/* Mobile Filter Button */}
+                <div className="md:hidden mt-4">
+                    <div className="flex justify-center">
+                        <button
+                            onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
+                            className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 shadow-lg transition-colors"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
+                            </svg>
+                            Search & Filter Properties
+                            <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 transform transition-transform ${isMobileFilterOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Mobile Filter Panel */}
+                {isMobileFilterOpen && (
+                    <div className="md:hidden mt-4">
+                        <div className="bg-white bg-opacity-95 rounded-xl shadow-lg p-3 w-full">
+                            {/* Search Bar + Price Range */}
+                            <div className="mb-4 flex flex-col gap-3">
+                                {/* Search Bar */}
+                                <div className="relative w-full">
+                                    <input
+                                        type="text"
+                                        placeholder="SEARCH"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-5 w-5 absolute right-3 top-3 text-gray-400"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                        />
+                                    </svg>
+                                </div>
+
+                                {/* Price Range */}
+                                <div className="w-full">
+                                    <div className="flex justify-between mb-2 flex-wrap gap-1">
+                                        <span className="text-sm font-medium text-gray-700">Price range:</span>
+                                        <span className="text-sm font-medium text-gray-900">
+                                            ₹{minPrice.toLocaleString('en-IN')} - ₹{maxPrice.toLocaleString('en-IN')}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <span className="text-xs text-gray-500">₹0</span>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="88451087"
+                                            value={maxPrice}
+                                            onChange={(e) => setMaxPrice(parseInt(e.target.value))}
+                                            className="w-full h-2 bg-teal-100 rounded-lg appearance-none cursor-pointer"
+                                        />
+                                        <span className="text-xs text-gray-500">₹88.5M</span>
+                                    </div>
+                                </div>
+                                {/* Filter Grid */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
+
+                                    {/* Types Dropdown */}
+                                    <div className="relative dropdown-container">
+                                        <button
+                                            className={`w-full p-3 border cursor-pointer border-gray-300 rounded-lg flex justify-between items-center ${openDropdown === 'status' ? 'ring-2 ring-teal-500' : ''}`}
+                                            onClick={() => setOpenDropdown(openDropdown === 'status' ? null : 'status')}
+                                        >
+                                            <span>Types</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        {openDropdown === 'status' && (
+                                            <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-y-auto">
+                                                {filterOptions.status.map(status => (
+                                                    <div key={status} className={`px-4 py-2 hover:bg-teal-50 cursor-pointer ${selectedStatus.includes(status) ? 'bg-teal-100' : ''}`} onClick={() => handleStatusChange(status)}>
+                                                        {status}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {selectedStatus.length > 0 && (
+                                            <div className="mt-2  flex flex-wrap gap-2">
+                                                {selectedStatus.map(status => (
+                                                    <span key={status} className="inline-flex items-center px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs">
+                                                        {status}
+                                                        <button onClick={() => handleStatusChange(status)} className="ml-1 cursor-pointer text-teal-800 hover:text-teal-900">&times;</button>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Bedrooms Filter */}
+                                    <div className="relative dropdown-container">
+                                        <button
+                                            className={`w-full p-3 border cursor-pointer border-gray-300 rounded-lg flex justify-between items-center ${openDropdown === 'bedroom' ? 'ring-2 ring-teal-500' : ''}`}
+                                            onClick={() => setOpenDropdown(openDropdown === 'bedroom' ? null : 'bedroom')}
+                                        >
+                                            <span>Bedrooms</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        {openDropdown === 'bedroom' && (
+                                            <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-y-auto">
+                                                {filterOptions.bedrooms.map(bedroom => (
+                                                    <div key={bedroom} className={`px-4 py-2 hover:bg-teal-50 cursor-pointer ${selectedBedrooms.includes(bedroom) ? 'bg-teal-100' : ''}`} onClick={() => handleBedroomChange(bedroom)}>
+                                                        {bedroom}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {selectedBedrooms.length > 0 && (
+                                            <div className="mt-2 flex flex-wrap gap-2">
+                                                {selectedBedrooms.map(bedroom => (
+                                                    <span key={bedroom} className="inline-flex items-center px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs">
+                                                        {bedroom}
+                                                        <button onClick={() => handleBedroomChange(bedroom)} className="ml-1 cursor-pointer text-teal-800 hover:text-teal-900">&times;</button>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Bathrooms Filter */}
+                                    <div className="relative dropdown-container">
+                                        <button
+                                            className={`w-full p-3 cursor-pointer border border-gray-300 rounded-lg flex justify-between items-center ${openDropdown === 'bathroom' ? 'ring-2 ring-teal-500' : ''}`}
+                                            onClick={() => setOpenDropdown(openDropdown === 'bathroom' ? null : 'bathroom')}
+                                        >
+                                            <span>Bathrooms</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        {openDropdown === 'bathroom' && (
+                                            <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-y-auto">
+                                                {filterOptions.bathrooms.map(bathroom => (
+                                                    <div key={bathroom} className={`px-4 py-2 hover:bg-teal-50 cursor-pointer ${selectedBathrooms.includes(bathroom) ? 'bg-teal-100' : ''}`} onClick={() => handleBathroomChange(bathroom)}>
+                                                        {bathroom}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {selectedBathrooms.length > 0 && (
+                                            <div className="mt-2 flex flex-wrap gap-2">
+                                                {selectedBathrooms.map(bathroom => (
+                                                    <span key={bathroom} className="inline-flex items-center px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs">
+                                                        {bathroom}
+                                                        <button onClick={() => handleBathroomChange(bathroom)} className="ml-1 cursor-pointer text-teal-800 hover:text-teal-900">&times;</button>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Cities Filter */}
+                                    <div className="relative dropdown-container">
+                                        <button
+                                            className={`w-full p-3 cursor-pointer border border-gray-300 rounded-lg flex justify-between items-center ${openDropdown === 'location' ? 'ring-2 ring-teal-500' : ''}`}
+                                            onClick={() => setOpenDropdown(openDropdown === 'location' ? null : 'location')}
+                                        >
+                                            <span>Cities</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        {openDropdown === 'location' && (
+                                            <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-y-auto">
+                                                {filterOptions.location.map(location => (
+                                                    <div key={location} className={`px-4 py-2 hover:bg-teal-50 cursor-pointer ${selectedLocation.includes(location) ? 'bg-teal-100' : ''}`} onClick={() => handleLocationChange(location)}>
+                                                        {location}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {selectedLocation.length > 0 && (
+                                            <div className="mt-2 flex flex-wrap gap-2">
+                                                {selectedLocation.map(location => (
+                                                    <span key={location} className="inline-flex items-center px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs">
+                                                        {location}
+                                                        <button onClick={() => handleLocationChange(location)} className="ml-1 cursor-pointer text-teal-800 hover:text-teal-900">&times;</button>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Landmark Dropdown */}
+                                    <div className="relative dropdown-container">
+                                        <button
+                                            className={`w-full p-3 cursor-pointer border border-gray-300 rounded-lg flex justify-between items-center ${openDropdown === 'landmark' ? 'ring-2 ring-teal-500' : ''}`}
+                                            // className={`w-full cursor-pointer p-3  border border-gray-300 rounded-lg flex justify-between items-center text-xs sm:text-sm ${openDropdown === 'landmark' ? 'ring-2 ring-teal-500' : ''}`}
+                                            onClick={() => setOpenDropdown(openDropdown === 'landmark' ? null : 'landmark')}
+                                        >
+                                            <span>Landmark</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        {openDropdown === 'landmark' && (
+                                            <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-y-auto">
+                                                {/* <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-y-auto text-xs sm:text-sm"> */}
+                                                {filterOptions.landmarks.map(landmark => (
+                                                    <div key={landmark} className={`px-4 py-2  hover:bg-teal-50 cursor-pointer ${selectedLandmarks.includes(landmark) ? 'bg-teal-100' : ''}`} onClick={() => handleLandmarkChange(landmark)}>
+                                                        {landmark}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {selectedLandmarks.length > 0 && (
+                                            <div className="mt-2 flex flex-wrap gap-2">
+                                                {selectedLandmarks.map(landmark => (
+                                                    <span key={landmark} className="inline-flex items-center px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs">
+                                                        {landmark}
+                                                        <button onClick={() => handleLandmarkChange(landmark)} className="ml-1 cursor-pointer text-teal-800 hover:text-teal-900">&times;</button>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Property Count */}
+                            <div className="pt-2 text-right text-sm">
+                                <span className="text-gray-600 font-medium">
+                                    {filteredCount} properties found
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
-        </div>
+        </div >
     );
 }

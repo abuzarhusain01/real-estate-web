@@ -1,0 +1,47 @@
+/* iPad Pro fix: compact navbar */
+@media (min-width: 1024px) and (max-width: 1366px) {
+
+    /* container padding */
+    nav .max-w-screen-xl {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Logo stays pinned left */
+    nav .flex.justify-between {
+        justify-content: space-between !important;
+    }
+
+
+
+    .featured-grid>* {
+        flex: 0 0 32% !important;
+        /* 3 items per row, no overflow */
+    }
+
+
+    /* Menu links spacing tighter */
+    nav .lg\:flex.gap-8 {
+        gap: 1rem !important;
+        margin-left: 1.5rem !important;
+        margin-right: 1rem !important;
+        /* <-- Add this to push links away from auth section */
+    }
+
+    /* Auth section spacing (favorites + login) */
+    nav .hidden.lg\:flex.items-center.gap-4 {
+        gap: 1.25rem !important;
+    }
+
+    /* Ensure icons and text inside auth container have consistent spacing */
+    nav .hidden.lg\:flex.items-center.gap-4>*:not(:last-child) {
+        margin-right: 0.5rem !important;
+    }
+
+    /* smaller font for tight space */
+    nav a,
+    nav span,
+    nav button {
+        font-size: 0.85rem !important;
+    }
+}

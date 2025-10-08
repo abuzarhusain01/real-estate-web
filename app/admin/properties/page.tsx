@@ -8,11 +8,11 @@ const ITEMS_PER_PAGE = 10;
 
 type Property = {
     id: number;
-    image: string;       // banner image
-    images: string[];    // all other images (JSON array from DB)
+    image: string;
+    images: string[];
     name: string;
     description: string;
-    price: number;
+    price: number | string;
     owner_name: string;
     location: string;
     owner_contact: string;
@@ -20,6 +20,23 @@ type Property = {
     created_at: string | Date;
 };
 
+// 🟢 Utility function: lakh/crore handle
+function parsePrice(input: string | number): number {
+    if (typeof input === "number") return input;
+
+    let value = input.toLowerCase().trim();
+
+    if (value.includes("lakh")) {
+        const num = parseFloat(value.replace("lakh", "").trim());
+        return isNaN(num) ? 0 : num * 1_00_000;
+    } else if (value.includes("crore")) {
+        const num = parseFloat(value.replace("crore", "").trim());
+        return isNaN(num) ? 0 : num * 1_00_00_000;
+    } else {
+        const num = parseFloat(value.replace(/,/g, ""));
+        return isNaN(num) ? 0 : num;
+    }
+}
 
 export default function Properties() {
     const [properties, setProperties] = useState<Property[]>([]);
@@ -82,7 +99,6 @@ export default function Properties() {
         setFilteredProperties(filtered);
     }, [searchName, searchLocation, searchStatus, properties]);
 
-    // Handle image click
     const handleImageClick = (property: Property) => {
         // Show all images: banner + rest
         const images: string[] = [
@@ -93,7 +109,6 @@ export default function Properties() {
         setSelectedPropertyName(property.name);
         setIsGalleryOpen(true);
     };
-
 
     const totalPages = Math.ceil(totalProperties / ITEMS_PER_PAGE);
 
@@ -106,7 +121,7 @@ export default function Properties() {
     };
 
     return (
-        <div className="min-h-screen w-full  px-4 py-10 sm:px-10 md:px-20">
+        <div className="min-h-screen w-full px-4 py-10 sm:px-6 md:px-6 lg:px-10 xl:px-20">
             <div className="max-w-7xl mx-auto bg-[#aaa] rounded-2xl px-4 sm:px-6 md:px-8 py-8 sm:py-10">
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 sm:mb-10">
                     <h1 className="text-2xl sm:text-4xl font-semibold text-white text-center sm:text-left">
@@ -124,7 +139,7 @@ export default function Properties() {
                     </Link>
                 </div>
 
-                {/* 🔍 Filters */}
+                {/* Filters */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 pb-10 gap-4 w-full mt-4">
                     <input
                         type="text"
@@ -174,7 +189,6 @@ export default function Properties() {
                             </thead>
                             <tbody className="divide-y divide-gray-200">
                                 {loading ? (
-                                    // Skeleton loader rows
                                     [...Array(ITEMS_PER_PAGE)].map((_, index) => (
                                         <tr key={index} className="animate-pulse">
                                             <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-24"></div></td>
@@ -195,7 +209,7 @@ export default function Properties() {
                                             <td className="px-4 py-4 text-gray-900 font-medium">{property.name}</td>
                                             <td className="px-4 py-4 text-gray-700 max-w-xs whitespace-normal break-words">{property.description}</td>
                                             <td className="px-4 py-4 text-gray-900 font-medium">
-                                                ₹{Number(property.price).toLocaleString("en-IN")}
+                                                ₹{parsePrice(property.price).toLocaleString("en-IN")}
                                             </td>
                                             <td className="px-4 py-4 text-gray-900">{property.owner_name}</td>
                                             <td className="px-4 py-4 text-gray-900">{property.location}</td>
@@ -204,14 +218,14 @@ export default function Properties() {
                                             <td className="px-4 py-3 text-gray-900">
                                                 {property.created_at ? (
                                                     <>
-                                                        <div className="">
+                                                        <div>
                                                             {new Date(property.created_at).toLocaleDateString("en-GB", {
                                                                 day: "2-digit",
                                                                 month: "short",
                                                                 year: "numeric",
                                                             })}
                                                         </div>
-                                                        <div className="">
+                                                        <div>
                                                             {new Date(property.created_at).toLocaleTimeString("en-GB", {
                                                                 hour: "2-digit",
                                                                 minute: "2-digit",
@@ -225,13 +239,12 @@ export default function Properties() {
                                             </td>
                                             <td className="px-4 py-4 text-gray-900">
                                                 <img
-                                                    src={property.image} // ✅ only banner shown
+                                                    src={property.image}
                                                     alt={property.name}
                                                     className="w-16 h-12 object-cover rounded cursor-pointer hover:opacity-80"
                                                     onClick={() => handleImageClick(property)}
                                                 />
                                             </td>
-
                                             <td className="px-4 py-4 text-right">
                                                 <div className="flex gap-2 justify-end flex-wrap">
                                                     <Link href={`/admin/properties/edit/${property.id}`} className="text-blue-600 hover:text-blue-800 px-3 py-1 rounded-md hover:bg-blue-100 text-xs sm:text-sm">
@@ -252,6 +265,7 @@ export default function Properties() {
                     </div>
                 </div>
 
+                {/* Pagination */}
                 {totalPages > 1 && (
                     <div className="flex justify-center items-center gap-4 mt-6">
                         <button onClick={handlePrevious} disabled={currentPage === 1} className="px-4 py-2 bg-white border rounded disabled:opacity-50">
@@ -295,7 +309,6 @@ export default function Properties() {
                     </div>
                 </div>
             )}
-
         </div>
     );
 }

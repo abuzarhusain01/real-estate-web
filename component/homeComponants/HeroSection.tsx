@@ -1,10 +1,15 @@
 import React from "react";
 import Navbar from "../Navbar";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
+
+    const router = useRouter();
+
     return (
         <div className="relative w-full h-auto flex justify-center py-4">
-            <div className="w-full px-4 md:px-14">
+            <div className="w-full px-4 md:px-14 ipadpro-padding">
+
                 <div className="relative rounded-2xl overflow-hidden h-[400px] md:h-[650px]">
                     <img
                         src="/homepage.jpg"
@@ -26,6 +31,7 @@ const HeroSection = () => {
                             <br />
                             <button
                                 type="button"
+                                onClick={() => router.push("/properties")}
                                 className="bg-teal-600 hover:bg-teal-700 text-white cursor-pointer text-lg tracking-wide px-10 py-3 rounded-full mx-auto transition-colors"
                             >
                                 Start Searching

@@ -156,7 +156,7 @@ export default function Sales() {
     };
 
     return (
-        <div className="w-full  py-10 px-4 md:px-20 min-h-screen">
+        <div className="min-h-screen w-full px-4 py-10 sm:px-6 md:px-6 lg:px-10 xl:px-20">
             <div className="max-w-7xl mx-auto bg-[#aaa] rounded-2xl px-4 sm:px-6 md:px-8 py-8">
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
                     <h1 className="text-2xl sm:text-3xl font-semibold text-white mb-4 sm:mb-0">
