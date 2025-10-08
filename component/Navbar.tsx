@@ -1,9 +1,12 @@
+
 'use client';
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Menu, X, LogOut, Heart } from "lucide-react";
+import "./navbar.css";
+
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -13,7 +16,7 @@ export default function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const savedUser = localStorage.getItem("user");
+        const savedUser = localStorage.getItem("customerUser");
         if (savedUser) {
             setUser(JSON.parse(savedUser));
             setIsLoggedIn(true);
@@ -21,13 +24,13 @@ export default function Navbar() {
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem("user");
+        localStorage.removeItem("customerUser");
         setUser(null);
         setIsLoggedIn(false);
         router.push("/auth/login");
     };
 
-    // Fixed navLink function with active color match
+
     const navLink = (href: string, label: string, isMobile: boolean = false) => {
         const isActive = pathname === href;
         return (
@@ -45,6 +48,7 @@ export default function Navbar() {
     return (
         <nav className="bg-transparent text-white px-6 md:px-12 py-6 relative z-50">
             <div className="max-w-screen-xl mx-auto flex justify-between items-center">
+
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 text-white font-bold text-lg">
                     <img src="/f2logo.png" alt="Logo" className="h-8 w-auto" />
@@ -53,8 +57,8 @@ export default function Navbar() {
                     </span>
                 </Link>
 
-                {/* Desktop Navigation */}
-                <div className="hidden md:flex gap-8 items-center text-base">
+                {/* Desktop Navigation - show only on lg+ */}
+                <div className="hidden lg:flex gap-8 items-center text-base">
                     {navLink("/", "Home")}
                     {navLink("/about-us", "About")}
                     {navLink("/services", "Services")}
@@ -62,14 +66,12 @@ export default function Navbar() {
                     {navLink("/contact-us", "Contact")}
                     {navLink("/comparison", "Comparison")}
                     <Link href="/favourites" className="hover:text-teal-400 transition-colors">
-                        <Heart
-                            className={`w-5 h-5 ${pathname === "/favourites" ? "text-teal-400" : "text-white"}`}
-                        />
+                        <Heart className={`w-5 h-5 ${pathname === "/favourites" ? "text-teal-400" : "text-white"}`} />
                     </Link>
                 </div>
 
-                {/* Desktop Auth Section */}
-                <div className="hidden md:flex items-center gap-4 text-base">
+                {/* Desktop Auth Section - show only on lg+ */}
+                <div className="hidden lg:flex items-center gap-4 text-base">
                     {isLoggedIn ? (
                         <>
                             <span className="text-base">{user?.name || user?.email}</span>
@@ -84,23 +86,24 @@ export default function Navbar() {
                     )}
                 </div>
 
-                {/* Mobile Menu Toggle */}
-                <div className="md:hidden">
-                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white">
+                {/* Mobile + Tablet Menu Toggle - show below lg */}
+                <div className="lg:hidden">
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white ">
                         {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                     </button>
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile + Tablet Menu */}
             {isMenuOpen && (
-                <div className="md:hidden bg-gray-900/90 px-4 pb-4 pt-2 mt-2 rounded-xl space-y-1">
+                <div className="lg:hidden bg-gray-900 px-4 pb-4 pt-2 mt-2 rounded-xl space-y-1 max-h-[60vh] overflow-y-auto h-[37vh]
+                  ">
                     {navLink("/", "Home", true)}
                     {navLink("/about-us", "About", true)}
                     {navLink("/services", "Services", true)}
                     {navLink("/properties", "Properties", true)}
                     {navLink("/contact-us", "Contact", true)}
-                    {navLink("/comparison", "Comparison")}
+                    {navLink("/comparison", "Comparison", true)}
                     <Link
                         href="/favourites"
                         onClick={() => setIsMenuOpen(false)}
