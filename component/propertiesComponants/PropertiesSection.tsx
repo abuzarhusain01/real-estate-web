@@ -36,14 +36,12 @@ type PropertiesSectionProps = {
 
 // Loading components
 const PropertySkeleton = React.memo(() => (
-    <div className="w-80 min-w-[320px] bg-white rounded-xl shadow-md mx-auto animate-pulse">
-        <div className="w-full h-56 bg-gray-300 rounded-t-xl"></div>
-        <div className="p-4 space-y-3">
-            <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-            <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-300 rounded w-full"></div>
-            <div className="h-5 bg-gray-300 rounded w-1/3"></div>
-        </div>
+    <div className="w-full bg-white rounded-xl shadow-md p-4 animate-pulse">
+        <div className="w-full h-56 bg-gray-300 rounded-lg mb-4" />
+        <div className="h-4 bg-gray-300 rounded w-3/4 mb-2" />
+        <div className="h-4 bg-gray-300 rounded w-1/2 mb-2" />
+        <div className="h-4 bg-gray-300 rounded w-5/6 mb-2" />
+        <div className="h-4 bg-gray-300 rounded w-1/3 mt-4" />
     </div>
 ));
 
@@ -80,7 +78,8 @@ export default function PropertiesSection({ filters, onFilteredCountChange }: Pr
         const [imageError, setImageError] = useState(false);
 
         return (
-            <div className="w-80 min-w-[320px] rounded-xl transition-transform duration-200 hover:scale-105 hover:shadow-xl mx-auto">
+            <div className="w-full rounded-xl transition-transform duration-200 hover:scale-105 hover:shadow-xl">
+
                 <div className="relative rounded-lg overflow-hidden shadow-md">
                     <button
                         onClick={(e) => {
@@ -344,7 +343,7 @@ export default function PropertiesSection({ filters, onFilteredCountChange }: Pr
             <section className="px-6 py-10 md:px-11 max-w-[98%] mx-auto">
                 <div className="max-w-7xl mx-auto text-center">
                     <div className="h-8 bg-gray-300 rounded w-64 mx-auto animate-pulse"></div>
-                    <div className="h-4 bg-gray-300 rounded w-96 mx-auto mt-4 animate-pulse"></div>
+                    <div className="h-4 bg-gray-300 rounded w-80 mx-auto mt-4 animate-pulse"></div>
                     <div className="h-0.5 w-12 bg-gray-300 mx-auto my-4 animate-pulse"></div>
                 </div>
                 <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -364,7 +363,8 @@ export default function PropertiesSection({ filters, onFilteredCountChange }: Pr
                 <div className="h-0.5 w-12 bg-teal-400 mx-auto my-4" />
             </div>
 
-            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+
                 {allPropertyList}
             </div>
 

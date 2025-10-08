@@ -31,17 +31,17 @@ export default function PropertyGallery({ images, propertyName }: PropertyGaller
     if (!images || images.length === 0) return null;
 
     return (
-        <div className="p-6 md:p-10 pt-0">
+        <div className="w-full max-w-[92%] mx-auto mt-10">
             <h2 className="text-3xl text-gray-800 mb-6 text-center">
                 Property Gallery
             </h2>
 
-            <div className="overflow-x-auto scroll-smooth snap-x snap-mandatory">
-                <div className="flex gap-4 w-max">
+            <div className="overflow-x-auto">
+                <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
                     {images.map((img, idx) => (
                         <div
                             key={idx}
-                            className="min-w-[220px] bg-white rounded-xl shadow transition-all duration-300 hover:scale-105 hover:shadow-lg overflow-hidden snap-center cursor-pointer"
+                            className="bg-white rounded-xl shadow p-2 flex-shrink-0 w-[85%] sm:w-[280px] md:w-[300px] snap-center transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
                             onClick={() => openModal(idx)}
                         >
                             <Image
@@ -49,12 +49,13 @@ export default function PropertyGallery({ images, propertyName }: PropertyGaller
                                 alt={`${propertyName} - Image ${idx + 1}`}
                                 width={300}
                                 height={200}
-                                className="w-full h-48 object-cover"
+                                className="rounded-xl h-40 w-full object-cover"
                             />
                         </div>
                     ))}
                 </div>
             </div>
+
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">

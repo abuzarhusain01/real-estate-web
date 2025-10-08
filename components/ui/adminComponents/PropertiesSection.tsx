@@ -35,23 +35,23 @@ const PropertiesSection = ({
                 {currentProperties.map((prop) => (
                     <div
                         key={prop.id}
-                        className="flex flex-col sm:flex-row justify-between gap-4 border p-4 rounded-xl bg-[#fafafa]"
+                        className="flex flex-col sm:flex-row justify-between gap-4 border p-4 rounded-xl bg-[#fafafa] w-full"
                     >
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 flex-1 min-w-0">
                             <img
                                 src={prop.image || prop.images?.[0] || "/placeholder.jpg"}
                                 alt={prop.name}
-                                className="w-24 h-16 rounded-md object-cover bg-gray-200"
+                                className="w-24 h-16 rounded-md object-cover bg-gray-200 flex-shrink-0"
                             />
-                            <div>
-                                <h3 className="font-semibold">{prop.name}</h3>
-                                <p className="text-sm text-gray-500">{prop.location}</p>
-                                <p className="text-sm text-gray-500">
+                            <div className="truncate">
+                                <h3 className="font-semibold truncate">{prop.name}</h3>
+                                <p className="text-sm text-gray-500 truncate">{prop.location}</p>
+                                <p className="text-sm text-gray-500 truncate">
                                     Contact: {prop.owner_contact}
                                 </p>
                             </div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right mt-2 sm:mt-0 flex-shrink-0">
                             <p className="text-sm text-gray-500">
                                 Sold on: {prop.created_at ? new Date(prop.created_at).toLocaleDateString() : ""}
                             </p>
@@ -62,6 +62,7 @@ const PropertiesSection = ({
                     </div>
                 ))}
             </div>
+
             <div className="flex justify-between items-center mt-4">
                 <Button
                     variant="outline"

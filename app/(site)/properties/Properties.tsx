@@ -95,7 +95,7 @@ export default function Properties() {
     }, []);
 
     return (
-        <div className="bg-[#f8f4f0] min-h-screen">
+        <div className="bg-[#f8f4f0]">
             {/* Hero Section with Search & Filters */}
             <Suspense fallback={<HeroSkeleton />}>
                 <HeroSection

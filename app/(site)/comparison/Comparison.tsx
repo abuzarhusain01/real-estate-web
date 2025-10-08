@@ -9,6 +9,7 @@ type Property = {
     id: number;
     image: string;
     name: string;
+    location: string;
     description: string;
     price: number;
     owner_name: string;
@@ -213,10 +214,10 @@ const Comparison = () => {
                         </div>
 
                         <div className="overflow-x-auto">
-                            <table className="w-full">
+                            <table className="w-full table-fixed min-w-[900px]">
                                 <thead>
                                     <tr className="bg-gray-50">
-                                        <th className="text-left p-4 font-semibold text-gray-800 min-w-[200px]">Feature</th>
+                                        <th className="text-left p-4 font-semibold text-gray-800 min-w-[180px]">Feature</th>
                                         {compareList.map((property) => (
                                             <th key={property.id} className="text-center p-4 min-w-[250px]">
                                                 <div className="relative">
@@ -238,7 +239,6 @@ const Comparison = () => {
                                                 </div>
                                             </th>
                                         ))}
-                                        {/* Add Property Slot */}
                                         {compareList.length < 3 && (
                                             <th className="text-center p-4 min-w-[250px]">
                                                 <button
@@ -262,8 +262,7 @@ const Comparison = () => {
                                                 <td key={property.id} className="p-4 text-center text-gray-700">
                                                     {feature.format
                                                         ? feature.format(property[feature.key as keyof Property] || 'N/A')
-                                                        : property[feature.key as keyof Property] || 'N/A'
-                                                    }
+                                                        : property[feature.key as keyof Property] || 'N/A'}
                                                 </td>
                                             ))}
                                             {compareList.length < 3 && (
@@ -274,6 +273,7 @@ const Comparison = () => {
                                 </tbody>
                             </table>
                         </div>
+
 
                         {/* Action Buttons */}
                         <div className="p-6 border-t bg-gray-50">
@@ -306,7 +306,7 @@ const Comparison = () => {
             {/* Add Property Modal */}
             {isAddModalOpen && (
                 <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[80vh] overflow-hidden">
+                    <div className="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[80vh] min-h-[280px] overflow-hidden">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-bold text-gray-800">Add Property to Compare</h2>
                             <button
@@ -363,6 +363,7 @@ const Comparison = () => {
                                 </div>
                             )}
                         </div>
+
 
                         <div className="mt-4 pt-4 border-t flex justify-end">
                             <button

@@ -1,6 +1,9 @@
 "use client";
 import React, { useEffect, useState, Suspense, lazy, useCallback, useMemo } from "react";
 import { Star } from 'lucide-react';
+import Link from "next/link";
+import Image from "next/image";
+
 
 // Lazy load sections
 const HeroSection = lazy(() => import('./homeComponants/HeroSection'));
@@ -43,71 +46,6 @@ type Customer = {
 };
 
 const ITEMS_PER_PAGE = 6;
-
-// Skeleton loader component for properties
-const PropertySkeleton = () => (
-    <div className="w-80 min-w-[320px] bg-white rounded-xl shadow-md p-4 animate-pulse mx-auto">
-        <div className="w-full h-56 bg-gray-300 rounded-lg mb-4" />
-        <div className="h-4 bg-gray-300 rounded w-3/4 mb-2" />
-        <div className="h-4 bg-gray-300 rounded w-1/2 mb-2" />
-        <div className="h-4 bg-gray-300 rounded w-5/6 mb-2" />
-        <div className="h-4 bg-gray-300 rounded w-1/3 mt-4" />
-    </div>
-);
-
-const PropertyCard = React.memo(({
-    property,
-    handleFavorite
-}: {
-    property: Property;
-    handleFavorite: (id: number, is_favourites: boolean) => void;
-}) => (
-    <div className="w-80 min-w-[320px] bg-transparent rounded-xl transition-transform duration-300 hover:scale-105 hover:shadow-xl mx-auto">
-        <div className="relative rounded-lg overflow-hidden shadow-md">
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    handleFavorite(property.id, !property.is_favourites);
-                }}
-                className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md hover:bg-red-100 transition"
-            >
-                {property.is_favourites ? (
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5 text-red-500 fill-red-500"
-                        viewBox="0 0 24 24"
-                    >
-                        <path d="M12.1 21.35l-1.1-1.02C5.14 15.22 2 12.17 2 8.5 2 6.01 4.01 4 6.5 4c1.74 0 3.41 1.01 4.1 2.09C11.09 5.01 12.76 4 14.5 4 16.99 4 19 6.01 19 8.5c0 3.67-3.14 6.72-8.9 11.83l-1.1 1.02z" />
-                    </svg>
-                ) : (
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5 text-red-500"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 21C12 21 4 13.75 4 8.5C4 6 6 4 8.5 4C10 4 11.5 5 12 6C12.5 5 14 4 15.5 4C18 4 20 6 20 8.5C20 13.75 12 21 12 21Z"
-                        />
-                    </svg>
-                )}
-            </button>
-            <img src={property.image} alt={property.name} className="w-full h-56 object-cover" />
-        </div>
-        <div className="p-4">
-            <p className="text-sm text-black uppercase">{property.location}</p>
-            <h3 className="mt-2 text-xl font-semibold text-gray-900">{property.name}</h3>
-            <p className="mt-1 text-gray-600 text-sm">{property.description}</p>
-            <p className="mt-3 text-teal-600 text-lg font-bold">₹{Number(property.price).toLocaleString("en-IN")}</p>
-        </div>
-    </div>
-));
-
-PropertyCard.displayName = 'PropertyCard';
 
 const TestimonialCard = React.memo(({ review }: { review: Review }) => (
     <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
@@ -190,7 +128,7 @@ export default function Properties() {
 
     // Check if user is logged in
     useEffect(() => {
-        const userData = localStorage.getItem('user');
+        const userData = localStorage.getItem('customerUser'); // <-- fixed key
         if (userData) {
             try {
                 const customer = JSON.parse(userData);
@@ -222,7 +160,7 @@ export default function Properties() {
     }, []);
 
     useEffect(() => {
-        const userData = localStorage.getItem('user');
+        const userData = localStorage.getItem('customerUser'); // <-- fixed key
         if (userData) {
             try {
                 const customer = JSON.parse(userData);

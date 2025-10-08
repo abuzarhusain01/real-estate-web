@@ -65,13 +65,13 @@ export default function VerifiedProperties({
             </h2>
 
             <div className="overflow-x-auto">
-                <div className="flex gap-6 w-max pb-2">
+                <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
                     {verifiedProperties.length > 0 ? (
                         verifiedProperties.map((verifiedProp) => (
                             <Link
                                 key={verifiedProp.id}
                                 href={`/properties/detail/${verifiedProp.id}`}
-                                className="bg-white rounded-lg shadow p-4 min-w-[280px] transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                                className="bg-white rounded-lg shadow p-4 flex-shrink-0 w-[85%] sm:w-[280px] md:w-[300px] snap-center transition-transform duration-300 hover:scale-105 hover:shadow-lg"
                             >
                                 <Image
                                     src={verifiedProp.image}

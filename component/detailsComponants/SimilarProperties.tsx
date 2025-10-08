@@ -1,4 +1,3 @@
-// components/SimilarProperties.tsx
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -100,31 +99,33 @@ export default function SimilarProperties({
 
     return (
         <div className="w-full max-w-[92%] mx-auto mt-10">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">
                 Similar Properties
             </h1>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                 {similarProducts.map((prod) => (
                     <Link
                         key={prod.id}
                         href={`/properties/detail/${prod.id}`}
-                        className="bg-white text-black p-3 rounded-xl shadow transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-gray-50"
+                        className="bg-white text-black p-3 sm:p-4 rounded-xl shadow transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-gray-50 flex flex-col"
                     >
                         <Image
                             src={prod.image}
                             alt={prod.name}
                             width={200}
                             height={200}
-                            className="h-40 w-full object-cover rounded-md"
+                            className="h-36 sm:h-40 w-full object-cover rounded-md"
                         />
-                        <p className="mt-2 text-sm font-semibold">{prod.name}</p>
-                        <p className="text-black font-medium mb-2">₹{Number(prod.price).toLocaleString("en-IN")}</p>
-                        <p className="text-xs text-gray-600">
+                        <p className="mt-2 text-sm sm:text-base font-semibold truncate">{prod.name}</p>
+                        <p className="text-black font-medium mb-2 text-sm sm:text-base">
+                            ₹{Number(prod.price).toLocaleString("en-IN")}
+                        </p>
+                        <p className="text-xs sm:text-sm text-gray-600">
                             {prod.bedrooms && prod.bedrooms !== '' ? `${prod.bedrooms} BHK` : 'N/A BHK'}
                             {prod.bathrooms && prod.bathrooms !== '' ? `, ${prod.bathrooms} Bath` : ', N/A Bath'}
                             {prod.balconies && prod.balconies !== '' ? `, ${prod.balconies} Balcony` : ', N/A Balcony'}
                         </p>
-                        <div className="flex justify-end">
+                        <div className="flex justify-end mt-2">
                             <CompareIcon
                                 onClick={(e) => {
                                     e.preventDefault();
@@ -143,7 +144,7 @@ export default function SimilarProperties({
                 <div className="flex justify-center mt-6">
                     <button
                         onClick={onLoadMore}
-                        className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+                        className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-blue-700 text-sm sm:text-base"
                     >
                         Load More
                     </button>
