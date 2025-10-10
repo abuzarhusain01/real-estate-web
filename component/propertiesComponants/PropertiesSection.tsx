@@ -137,7 +137,10 @@ export default function PropertiesSection({ filters, onFilteredCountChange }: Pr
                     <p className="text-sm text-gray-600 uppercase font-medium">{property.location}</p>
                     <h3 className="mt-2 text-xl font-semibold text-gray-900 line-clamp-1">{property.name}</h3>
                     <p className="mt-1 text-gray-600 text-sm line-clamp-2">{property.description}</p>
-                    <p className="mt-3 text-teal-600 text-lg font-bold">₹{Number(property.price).toLocaleString("en-IN")}</p>
+                    <p className="mt-3 text-teal-600 text-lg font-bold">
+                        ₹{formatPrice(property.price)}
+                    </p>
+
                 </div>
             </div>
         );
@@ -354,6 +357,27 @@ export default function PropertiesSection({ filters, onFilteredCountChange }: Pr
             </section>
         );
     }
+
+    // Helper to handle numbers, lakh, crore inputs
+    const formatPrice = (price: string | number): string => {
+        if (typeof price === "number" && !isNaN(price)) {
+            return price.toLocaleString("en-IN");
+        }
+
+        if (typeof price === "string") {
+            const lower = price.toLowerCase().trim();
+            let num = parseFloat(lower.replace(/[^\d.]/g, "")); // extract number
+
+            if (lower.includes("lakh")) num *= 100000;
+            else if (lower.includes("crore")) num *= 10000000;
+
+            if (isNaN(num)) return "0";
+            return num.toLocaleString("en-IN");
+        }
+
+        return "0";
+    };
+
 
     return (
         <section className="px-6 py-10 md:px-11 max-w-[98%] mx-auto">
