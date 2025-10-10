@@ -108,8 +108,30 @@ const Comparison = () => {
         property.project.toLowerCase().includes(searchQuery.toLowerCase())
     ).filter(property => !compareList.some(comp => comp.id === property.id));
 
+    // Helper to handle numbers, lakh, crore inputs
+    // Helper to handle numbers and text like "lakh", "crore"
+    const formatPrice = (price: string | number): string => {
+        if (typeof price === "number" && !isNaN(price)) {
+            return price.toLocaleString("en-IN");
+        }
+
+        if (typeof price === "string") {
+            const lower = price.toLowerCase().trim();
+            let num = parseFloat(lower.replace(/[^\d.]/g, "")); // extract numeric part
+
+            if (lower.includes("lakh")) num *= 100000;
+            else if (lower.includes("crore")) num *= 10000000;
+
+            if (isNaN(num)) return "0";
+            return num.toLocaleString("en-IN");
+        }
+
+        return "0";
+    };
+
+
     const comparisonFeatures = [
-        { key: 'price', label: 'Price', format: (value: any) => `₹${Number(value).toLocaleString("en-IN")}` },
+        { key: 'price', label: 'Price', format: (value: any) => `₹${formatPrice(value)}` },
         { key: 'location', label: 'Location' },
         { key: 'project', label: 'Project' },
         { key: 'flat', label: 'Configuration' },
@@ -121,8 +143,8 @@ const Comparison = () => {
         { key: 'furnishing', label: 'Furnishing' },
         { key: 'facing', label: 'Facing' },
         { key: 'status', label: 'Status' },
-        { key: 'emi', label: 'EMI', format: (value: any) => `₹${Number(value).toLocaleString("en-IN")}` },
-        { key: 'booking_amount', label: 'Booking Amount', format: (value: any) => `₹${Number(value).toLocaleString("en-IN")}` },
+        { key: 'emi', label: 'EMI', format: (value: any) => `₹${formatPrice(value)}` },
+        { key: 'booking_amount', label: 'Booking Amount', format: (value: any) => `₹${formatPrice(value)}` },
         { key: 'flooring', label: 'Flooring' },
         { key: 'lifts', label: 'Lifts' },
         { key: 'overlooking', label: 'Overlooking' },
@@ -349,7 +371,7 @@ const Comparison = () => {
                                                 <h3 className="font-semibold text-sm text-gray-800">{property.name}</h3>
                                                 <p className="text-xs text-gray-600">{property.location}</p>
                                                 <p className="text-xs text-gray-600">{property.project}</p>
-                                                <p className="text-sm font-medium text-gray-800">₹{Number(property.price).toLocaleString("en-IN")}</p>
+                                                <p className="text-sm font-medium text-gray-800"> ₹{formatPrice(property.price)}</p>
                                                 <p className="text-xs text-blue-600">{property.flat} | {property.carpet_area}</p>
                                             </div>
                                         </div>

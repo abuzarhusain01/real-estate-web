@@ -16,6 +16,23 @@ interface PropertyHotspotsProps {
     location: string;
     address: string;
 }
+// Helper to handle numbers, lakh, crore inputs
+const formatPrice = (price: string | number) => {
+    if (typeof price === "number") return price.toLocaleString("en-IN");
+
+    let numPrice = 0;
+    const lowerPrice = price.toString().toLowerCase().trim();
+
+    if (lowerPrice.includes("lakh")) {
+        numPrice = parseFloat(lowerPrice.replace("lakh", "").trim()) * 100000;
+    } else if (lowerPrice.includes("crore")) {
+        numPrice = parseFloat(lowerPrice.replace("crore", "").trim()) * 10000000;
+    } else {
+        numPrice = parseFloat(lowerPrice);
+    }
+
+    return isNaN(numPrice) ? "0" : numPrice.toLocaleString("en-IN");
+};
 
 export default function PropertyHotspots({ hotspots, location, address }: PropertyHotspotsProps) {
     return (
@@ -48,7 +65,7 @@ export default function PropertyHotspots({ hotspots, location, address }: Proper
                             />
                             <p className="text-xs sm:text-sm font-medium mt-2 truncate">{hotspotProperty.name}</p>
                             <p className="text-xs sm:text-sm text-gray-600 truncate">{hotspotProperty.location}</p>
-                            <p className="text-[10px] sm:text-xs text-gray-500">₹{Number(hotspotProperty.price).toLocaleString("en-IN")}</p>
+                            <p className="text-[10px] sm:text-xs text-gray-500">  ₹{formatPrice(hotspotProperty.price)}</p>
                         </Link>
                     ))}
                 </div>
