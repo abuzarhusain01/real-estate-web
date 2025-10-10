@@ -51,6 +51,24 @@ function CompareIcon({
     );
 }
 
+// Helper to handle numbers, lakh, crore inputs
+const formatPrice = (price: string | number) => {
+    if (typeof price === "number") return price.toLocaleString("en-IN");
+
+    let numPrice = 0;
+    const lowerPrice = price.toString().toLowerCase().trim();
+
+    if (lowerPrice.includes("lakh")) {
+        numPrice = parseFloat(lowerPrice.replace("lakh", "").trim()) * 100000;
+    } else if (lowerPrice.includes("crore")) {
+        numPrice = parseFloat(lowerPrice.replace("crore", "").trim()) * 10000000;
+    } else {
+        numPrice = parseFloat(lowerPrice);
+    }
+
+    return isNaN(numPrice) ? "0" : numPrice.toLocaleString("en-IN");
+};
+
 export default function OtherProperties({ nearbyProperties, onAddToCompare }: OtherPropertiesProps) {
     const [hoveredCompareButton, setHoveredCompareButton] = useState<string | null>(null);
 
@@ -76,7 +94,7 @@ export default function OtherProperties({ nearbyProperties, onAddToCompare }: Ot
                                 className="rounded-xl h-40 w-full object-cover mb-3"
                             />
                             <p className="text-sm font-medium">{nearbyProp.name}</p>
-                            <p className="text-gray-700 font-semibold">₹{Number(nearbyProp.price).toLocaleString("en-IN")} | {nearbyProp.carpet_area}</p>
+                            <p className="text-gray-700 font-semibold">  ₹{formatPrice(nearbyProp.price)} | {nearbyProp.carpet_area}</p>
                             <p className="text-gray-600 text-sm">{nearbyProp.address}</p>
                             <p className="text-gray-500 text-xs">{nearbyProp.status}</p>
                             <div className="flex justify-end ">

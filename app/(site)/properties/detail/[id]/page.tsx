@@ -439,6 +439,24 @@ export default function DetailPage() {
 
     if (!property) return <div>Property not found</div>;
 
+    // Helper to handle numbers, lakh, crore inputs
+    const formatPrice = (price: string | number) => {
+        if (typeof price === "number") return price.toLocaleString("en-IN");
+
+        let numPrice = 0;
+        const lowerPrice = price.toString().toLowerCase().trim();
+
+        if (lowerPrice.includes("lakh")) {
+            numPrice = parseFloat(lowerPrice.replace("lakh", "").trim()) * 100000;
+        } else if (lowerPrice.includes("crore")) {
+            numPrice = parseFloat(lowerPrice.replace("crore", "").trim()) * 10000000;
+        } else {
+            numPrice = parseFloat(lowerPrice);
+        }
+
+        return isNaN(numPrice) ? "0" : numPrice.toLocaleString("en-IN");
+    };
+
     return (
         <div className="bg-[#f8f4f0]  py-10">
             <div className="absolute bg-black top-0 left-0 w-full z-20">
@@ -483,10 +501,10 @@ export default function DetailPage() {
 
                         <div className="mb-4">
                             <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-                                ₹{Number(property.price).toLocaleString("en-IN")}
+                                ₹{formatPrice(property.price)}
                             </h1>
                             <div className="text-xs sm:text-sm text-blue-600 font-medium flex flex-wrap gap-2 mt-1">
-                                <span>EMI - ₹{Number(property.emi).toLocaleString("en-IN")}</span>
+                                <span>EMI - ₹{formatPrice(property.emi)}</span>
                                 <span>|</span>
                                 <span className="underline cursor-pointer">Need Home Loan? Check Eligibility</span>
                             </div>
@@ -536,8 +554,8 @@ export default function DetailPage() {
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">More Details</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 text-gray-800">
-                    <div><strong>Price Breakup:</strong>&nbsp;₹{Number(property.price_breakup).toLocaleString("en-IN")} | ₹{Number(property.emi).toLocaleString("en-IN")}</div>
-                    <div><strong>Booking Amount:</strong>&nbsp;₹{Number(property.booking_amount).toLocaleString("en-IN")}</div>
+                    <div><strong>Price Breakup:</strong>&nbsp;₹{formatPrice(property.price_breakup)} | ₹{formatPrice(property.emi)}</div>
+                    <div><strong>Booking Amount:</strong>&nbsp;₹{formatPrice(property.booking_amount)}</div>
                     <div><strong>Address:</strong> <span className="">{property.address}</span></div>
                     <div><strong>Landmarks:</strong> <span className="">{property.landmarks}</span></div>
                     <div><strong>Furnishing:</strong> <span className="">{property.furnishing}</span></div>
@@ -557,10 +575,6 @@ export default function DetailPage() {
                 </div>
 
                 <div className="mt-6 flex gap-4 flex-wrap">
-                    {/* <button className="group bg-red-600 cursor-pointer text-white font-semibold px-4 py-2 rounded-md hover:bg-red-700 relative overflow-hidden">
-                        <span className="block group-hover:hidden">Contact Owner</span>/
-                        <span className="hidden group-hover:block">{property.owner_contact}</span>
-                    </button> */}
                     <a
                         href={`tel:${property.owner_contact}`}
                         className="group bg-red-600 cursor-pointer text-white font-semibold px-4 py-2 rounded-md hover:bg-red-700"
@@ -587,7 +601,7 @@ export default function DetailPage() {
                         <div className="flex flex-col w-full sm:w-auto">
                             <h3 className="text-lg font-semibold text-gray-900">{property.project}</h3>
                             <p className="text-sm text-gray-600">
-                                Price: <span className="font-medium">₹{Number(property.price).toLocaleString("en-IN")}</span>
+                                Price: <span className="font-medium">₹{formatPrice(property.price)}</span>
                             </p>
                             <p className="text-sm text-gray-600">
                                 Configuration: <span className="font-medium">{property.flat} flats</span>
