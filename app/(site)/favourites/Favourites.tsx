@@ -74,6 +74,24 @@ const Favourites = () => {
         }
     }, []);
 
+    // Helper to handle numbers, lakh, crore inputs
+    const formatPrice = (price: string | number) => {
+        if (typeof price === "number") return price.toLocaleString("en-IN");
+
+        let numPrice = 0;
+        const lowerPrice = price.toString().toLowerCase().trim();
+
+        if (lowerPrice.includes("lakh")) {
+            numPrice = parseFloat(lowerPrice.replace("lakh", "").trim()) * 100000;
+        } else if (lowerPrice.includes("crore")) {
+            numPrice = parseFloat(lowerPrice.replace("crore", "").trim()) * 10000000;
+        } else {
+            numPrice = parseFloat(lowerPrice);
+        }
+
+        return isNaN(numPrice) ? "0" : numPrice.toLocaleString("en-IN");
+    };
+
     // ⭐ Pagination logic
     const totalPages = Math.ceil(favorites.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -211,7 +229,7 @@ const Favourites = () => {
                                                 {property.description}
                                             </p>
                                             <p className="mt-3 text-teal-600 text-lg font-bold">
-                                                ₹{Number(property.price).toLocaleString("en-IN")}
+                                                ₹{formatPrice(property.price)}
                                             </p>
                                         </div>
                                     </Link>
@@ -235,8 +253,8 @@ const Favourites = () => {
                                         key={pageNum}
                                         onClick={() => setCurrentPage(pageNum)}
                                         className={`px-4 py-2 rounded-md cursor-pointer transition-colors ${currentPage === pageNum
-                                                ? "bg-teal-600 text-white"
-                                                : "bg-gray-200 hover:bg-gray-300"
+                                            ? "bg-teal-600 text-white"
+                                            : "bg-gray-200 hover:bg-gray-300"
                                             }`}
                                     >
                                         {pageNum}

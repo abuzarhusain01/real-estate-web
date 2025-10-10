@@ -87,6 +87,24 @@ function CompareIcon({
     );
 }
 
+// Helper to handle numbers, lakh, crore inputs
+const formatPrice = (price: string | number) => {
+    if (typeof price === "number") return price.toLocaleString("en-IN");
+
+    let numPrice = 0;
+    const lowerPrice = price.toString().toLowerCase().trim();
+
+    if (lowerPrice.includes("lakh")) {
+        numPrice = parseFloat(lowerPrice.replace("lakh", "").trim()) * 100000;
+    } else if (lowerPrice.includes("crore")) {
+        numPrice = parseFloat(lowerPrice.replace("crore", "").trim()) * 10000000;
+    } else {
+        numPrice = parseFloat(lowerPrice);
+    }
+
+    return isNaN(numPrice) ? "0" : numPrice.toLocaleString("en-IN");
+};
+
 export default function SimilarProperties({
     similarProducts,
     hasMoreSimilar,
@@ -118,7 +136,7 @@ export default function SimilarProperties({
                         />
                         <p className="mt-2 text-sm sm:text-base font-semibold truncate">{prod.name}</p>
                         <p className="text-black font-medium mb-2 text-sm sm:text-base">
-                            ₹{Number(prod.price).toLocaleString("en-IN")}
+                            ₹{formatPrice(prod.price)}
                         </p>
                         <p className="text-xs sm:text-sm text-gray-600">
                             {prod.bedrooms && prod.bedrooms !== '' ? `${prod.bedrooms} BHK` : 'N/A BHK'}
