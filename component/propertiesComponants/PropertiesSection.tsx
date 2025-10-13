@@ -78,7 +78,7 @@ export default function PropertiesSection({ filters, onFilteredCountChange }: Pr
     }) => {
         const [imageLoaded, setImageLoaded] = useState(false);
         const [imageError, setImageError] = useState(false);
-
+       console.log(property,"property is::");
         return (
             <div className="w-80 min-w-[320px] rounded-xl transition-transform duration-200 hover:scale-105 hover:shadow-xl mx-auto">
                 <div className="relative rounded-lg overflow-hidden shadow-md">
