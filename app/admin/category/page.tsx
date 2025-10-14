@@ -121,7 +121,7 @@ export default function CategoryPage() {
   };
 
   return (
-    <div className="min-h-screen w-full  px-4 py-10 sm:px-10 md:px-20">
+    <div className="min-h-screen w-full px-4 py-10 sm:px-6 md:px-6 lg:px-10 xl:px-20">
       <div className="max-w-7xl mx-auto bg-[#aaa] rounded-2xl px-4 sm:px-6 md:px-8 py-8 sm:py-10">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 sm:mb-10">
           <h1 className="text-2xl sm:text-4xl font-semibold text-white text-center sm:text-left">

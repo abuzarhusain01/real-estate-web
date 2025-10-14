@@ -53,11 +53,61 @@ const Dashboard = () => {
 
     const router = useRouter();
 
-    const formatINR = (amount: number) =>
-        amount.toLocaleString("en-IN", { style: "currency", currency: "INR" });
+    const formatINR = (amount: any) => {
+        if (amount == null || amount === "") return "N/A";
+
+        if (typeof amount === "number") {
+            return amount.toLocaleString("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0,
+            });
+        }
+
+        if (typeof amount === "string") {
+            const lower = amount.toLowerCase().trim();
+
+            if (lower.includes("lakh")) {
+                const num = parseFloat(lower.replace(/[^0-9.]/g, ""));
+                if (!isNaN(num)) {
+                    const value = num * 100000;
+                    return value.toLocaleString("en-IN", {
+                        style: "currency",
+                        currency: "INR",
+                        maximumFractionDigits: 0,
+                    });
+                }
+            }
+
+            if (lower.includes("crore")) {
+                const num = parseFloat(lower.replace(/[^0-9.]/g, ""));
+                if (!isNaN(num)) {
+                    const value = num * 10000000;
+                    return value.toLocaleString("en-IN", {
+                        style: "currency",
+                        currency: "INR",
+                        maximumFractionDigits: 0,
+                    });
+                }
+            }
+
+            const num = parseFloat(lower);
+            if (!isNaN(num)) {
+                return num.toLocaleString("en-IN", {
+                    style: "currency",
+                    currency: "INR",
+                    maximumFractionDigits: 0,
+                });
+            }
+
+            return amount;
+        }
+
+        return amount;
+    };
 
     useEffect(() => {
-        const storedData = localStorage.getItem("user");
+        const storedData = localStorage.getItem("adminUser");
         if (storedData) {
             const parsedData = JSON.parse(storedData);
             setUserData({ id: parsedData.id, name: parsedData.name });
@@ -110,7 +160,6 @@ const Dashboard = () => {
         router.push("admin/auth/signin");
     };
 
-    // Search filtering
     const filteredProperties = soldProperties.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (p.location?.toLowerCase().includes(searchQuery.toLowerCase()) || "")
@@ -122,18 +171,17 @@ const Dashboard = () => {
         (l.message?.toLowerCase().includes(searchQuery.toLowerCase()) || "")
     );
 
-    // Properties pagination
     const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
     const startIndex = (currentPage - 1) * propertiesPerPage;
     const currentProperties = filteredProperties.slice(startIndex, startIndex + propertiesPerPage);
 
-    // Leads pagination
     const totalLeadsPages = Math.ceil(filteredLeads.length / leadsPerPage);
     const leadsStartIndex = (currentLeadsPage - 1) * leadsPerPage;
     const currentLeads = filteredLeads.slice(leadsStartIndex, leadsStartIndex + leadsPerPage);
 
     return (
-        <div className="px-4 sm:px-6 md:px-8 py-6 space-y-6 min-h-screen">
+        <div className="px-4 sm:px-6 md:px-8 py-6 space-y-6">
+
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="relative w-full md:w-72">
@@ -192,7 +240,7 @@ const Dashboard = () => {
                 />
             </Suspense>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 md:gap-2 gap-4">
                 {/* Properties Section with Lazy Loading */}
                 <Suspense fallback={
                     <div className="bg-white border border-gray-200 rounded-2xl p-6 lg:col-span-2 shadow space-y-4 animate-pulse">

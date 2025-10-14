@@ -101,7 +101,7 @@ export default function Chat({ messages = [], setMessages = () => { } }) {
             role: "assistant",
             content: `<div style="background:#e0f7fa;border-radius:8px;padding:10px;margin:10px 0;">
                 <div style="display:flex;align-items:center;">
-                    <span style="margin-right:8px;">✅</span>
+                    <span style="margin-right:8px;"> ✅</span>
                     <span>${confirmationMessage}</span>
                 </div>
             </div>`
@@ -218,7 +218,7 @@ export default function Chat({ messages = [], setMessages = () => { } }) {
                                     {comparisonProperties.map(property => (
                                         <td key={property.id} className="border p-2 text-center">
                                             {propertyDetails[property.id] ?
-                                                `₹${Number(propertyDetails[property.id].price).toLocaleString("en-IN")}` :
+                                                `₹${(propertyDetails[property.id].price).toLocaleString("en-IN")}` :
                                                 "Loading..."
                                             }
                                         </td>

@@ -3,8 +3,8 @@ import React, { useMemo, useRef, useState, useEffect, useCallback } from "react"
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Property } from "../types";
-import PropertyCard from "./PropertyCard";
 import PropertySkeleton from "./PropertySkeleton";
+import PropertyCard from "./PropertyCard";
 
 interface AllPropertiesSectionProps {
   allProperties: Property[];

@@ -9,6 +9,7 @@ type Property = {
     id: number;
     image: string;
     name: string;
+    location: string;
     description: string;
     price: number;
     owner_name: string;
@@ -107,8 +108,30 @@ const Comparison = () => {
         property.project.toLowerCase().includes(searchQuery.toLowerCase())
     ).filter(property => !compareList.some(comp => comp.id === property.id));
 
+    // Helper to handle numbers, lakh, crore inputs
+    // Helper to handle numbers and text like "lakh", "crore"
+    const formatPrice = (price: string | number): string => {
+        if (typeof price === "number" && !isNaN(price)) {
+            return price.toLocaleString("en-IN");
+        }
+
+        if (typeof price === "string") {
+            const lower = price.toLowerCase().trim();
+            let num = parseFloat(lower.replace(/[^\d.]/g, "")); // extract numeric part
+
+            if (lower.includes("lakh")) num *= 100000;
+            else if (lower.includes("crore")) num *= 10000000;
+
+            if (isNaN(num)) return "0";
+            return num.toLocaleString("en-IN");
+        }
+
+        return "0";
+    };
+
+
     const comparisonFeatures = [
-        { key: 'price', label: 'Price', format: (value: any) => `₹${Number(value).toLocaleString("en-IN")}` },
+        { key: 'price', label: 'Price', format: (value: any) => `₹${formatPrice(value)}` },
         { key: 'location', label: 'Location' },
         { key: 'project', label: 'Project' },
         { key: 'flat', label: 'Configuration' },
@@ -120,8 +143,8 @@ const Comparison = () => {
         { key: 'furnishing', label: 'Furnishing' },
         { key: 'facing', label: 'Facing' },
         { key: 'status', label: 'Status' },
-        { key: 'emi', label: 'EMI', format: (value: any) => `₹${Number(value).toLocaleString("en-IN")}` },
-        { key: 'booking_amount', label: 'Booking Amount', format: (value: any) => `₹${Number(value).toLocaleString("en-IN")}` },
+        { key: 'emi', label: 'EMI', format: (value: any) => `₹${formatPrice(value)}` },
+        { key: 'booking_amount', label: 'Booking Amount', format: (value: any) => `₹${formatPrice(value)}` },
         { key: 'flooring', label: 'Flooring' },
         { key: 'lifts', label: 'Lifts' },
         { key: 'overlooking', label: 'Overlooking' },
@@ -213,10 +236,10 @@ const Comparison = () => {
                         </div>
 
                         <div className="overflow-x-auto">
-                            <table className="w-full">
+                            <table className="w-full table-fixed min-w-[900px]">
                                 <thead>
                                     <tr className="bg-gray-50">
-                                        <th className="text-left p-4 font-semibold text-gray-800 min-w-[200px]">Feature</th>
+                                        <th className="text-left p-4 font-semibold text-gray-800 min-w-[180px]">Feature</th>
                                         {compareList.map((property) => (
                                             <th key={property.id} className="text-center p-4 min-w-[250px]">
                                                 <div className="relative">
@@ -238,7 +261,6 @@ const Comparison = () => {
                                                 </div>
                                             </th>
                                         ))}
-                                        {/* Add Property Slot */}
                                         {compareList.length < 3 && (
                                             <th className="text-center p-4 min-w-[250px]">
                                                 <button
@@ -262,8 +284,7 @@ const Comparison = () => {
                                                 <td key={property.id} className="p-4 text-center text-gray-700">
                                                     {feature.format
                                                         ? feature.format(property[feature.key as keyof Property] || 'N/A')
-                                                        : property[feature.key as keyof Property] || 'N/A'
-                                                    }
+                                                        : property[feature.key as keyof Property] || 'N/A'}
                                                 </td>
                                             ))}
                                             {compareList.length < 3 && (
@@ -274,6 +295,7 @@ const Comparison = () => {
                                 </tbody>
                             </table>
                         </div>
+
 
                         {/* Action Buttons */}
                         <div className="p-6 border-t bg-gray-50">
@@ -306,7 +328,7 @@ const Comparison = () => {
             {/* Add Property Modal */}
             {isAddModalOpen && (
                 <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[80vh] overflow-hidden">
+                    <div className="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[80vh] min-h-[280px] overflow-hidden">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-bold text-gray-800">Add Property to Compare</h2>
                             <button
@@ -349,7 +371,7 @@ const Comparison = () => {
                                                 <h3 className="font-semibold text-sm text-gray-800">{property.name}</h3>
                                                 <p className="text-xs text-gray-600">{property.location}</p>
                                                 <p className="text-xs text-gray-600">{property.project}</p>
-                                                <p className="text-sm font-medium text-gray-800">₹{Number(property.price).toLocaleString("en-IN")}</p>
+                                                <p className="text-sm font-medium text-gray-800"> ₹{formatPrice(property.price)}</p>
                                                 <p className="text-xs text-blue-600">{property.flat} | {property.carpet_area}</p>
                                             </div>
                                         </div>
@@ -363,6 +385,7 @@ const Comparison = () => {
                                 </div>
                             )}
                         </div>
+
 
                         <div className="mt-4 pt-4 border-t flex justify-end">
                             <button

@@ -51,6 +51,24 @@ function CompareIcon({
     );
 }
 
+// Helper to handle numbers, lakh, crore inputs
+const formatPrice = (price: string | number) => {
+    if (typeof price === "number") return price.toLocaleString("en-IN");
+
+    let numPrice = 0;
+    const lowerPrice = price.toString().toLowerCase().trim();
+
+    if (lowerPrice.includes("lakh")) {
+        numPrice = parseFloat(lowerPrice.replace("lakh", "").trim()) * 100000;
+    } else if (lowerPrice.includes("crore")) {
+        numPrice = parseFloat(lowerPrice.replace("crore", "").trim()) * 10000000;
+    } else {
+        numPrice = parseFloat(lowerPrice);
+    }
+
+    return isNaN(numPrice) ? "0" : numPrice.toLocaleString("en-IN");
+};
+
 export default function VerifiedProperties({
     verifiedProperties,
     fallbackProperty,
@@ -65,13 +83,13 @@ export default function VerifiedProperties({
             </h2>
 
             <div className="overflow-x-auto">
-                <div className="flex gap-6 w-max pb-2">
+                <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
                     {verifiedProperties.length > 0 ? (
                         verifiedProperties.map((verifiedProp) => (
                             <Link
                                 key={verifiedProp.id}
                                 href={`/properties/detail/${verifiedProp.id}`}
-                                className="bg-white rounded-lg shadow p-4 min-w-[280px] transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                                className="bg-white rounded-lg shadow p-4 flex-shrink-0 w-[85%] sm:w-[280px] md:w-[300px] snap-center transition-transform duration-300 hover:scale-105 hover:shadow-lg"
                             >
                                 <Image
                                     src={verifiedProp.image}
@@ -81,7 +99,7 @@ export default function VerifiedProperties({
                                     className="rounded-xl h-40 w-full object-cover mb-3"
                                 />
                                 <p className="text-sm font-medium">{verifiedProp.flat}</p>
-                                <p className="text-gray-700 font-semibold">₹{Number(verifiedProp.price).toLocaleString("en-IN")}</p>
+                                <p className="text-gray-700 font-semibold"> ₹{formatPrice(verifiedProp.price)}</p>
                                 <p className="text-gray-600 text-sm">{verifiedProp.name}</p>
                                 <p className="text-gray-500 text-xs">{verifiedProp.address}</p>
                                 <div className="flex justify-end">
@@ -111,7 +129,7 @@ export default function VerifiedProperties({
                                     className="rounded-xl h-40 w-full object-cover mb-3"
                                 />
                                 <p className="text-sm font-medium">{fallbackProperty.flat}</p>
-                                <p className="text-gray-700 font-semibold">₹{Number(fallbackProperty.price).toLocaleString("en-IN")}</p>
+                                <p className="text-gray-700 font-semibold"> ₹{formatPrice(fallbackProperty.price)}</p>
                                 <p className="text-gray-600 text-sm">{fallbackProperty.name}</p>
                                 <p className="text-gray-500 text-xs">{fallbackProperty.address}</p>
                             </div>

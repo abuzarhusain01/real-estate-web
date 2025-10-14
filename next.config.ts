@@ -2,13 +2,24 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   eslint: {
-    ignoreDuringBuilds: true, // ✅ Ignore ESLint errors
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true, // ✅ Ignore TypeScript errors
+    ignoreBuildErrors: true,
   },
   images: {
-    domains: ["fastly.picsum.photos"], // ✅ Allow external images
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "encrypted-tbn0.gstatic.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+    domains: [
+      "fastly.picsum.photos",
+      "encrypted-tbn0.gstatic.com", 
+    ],
   },
 };
 

@@ -274,52 +274,52 @@ export default function DetailPage() {
         credentials: "include",
       });
 
-      if (res.ok) {
-        const authData = await res.json();
-        if (authData.customer || authData.user) {
-          const customer = authData.customer || authData.user;
-          setUserData({
-            id: customer.id,
-            name: customer.name,
-            email: customer.email,
-            phone: customer.phone,
-          });
-          localStorage.setItem("user", JSON.stringify(customer));
+            if (res.ok) {
+                const authData = await res.json();
+                if (authData.customer || authData.user) {
+                    const customer = authData.customer || authData.user;
+                    setUserData({
+                        id: customer.id,
+                        name: customer.name,
+                        email: customer.email,
+                        phone: customer.phone
+                    });
+                    localStorage.setItem('user', JSON.stringify(customer));
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch user from auth API', error);
         }
-      }
-    } catch (error) {
-      console.error("Failed to fetch user from auth API", error);
-    }
-  }, []);
+    }, []);
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      try {
-        const customer = JSON.parse(userData);
-        setUserData({
-          id: customer.id,
-          name: customer.name,
-          email: customer.email,
-          phone: customer.phone,
-        });
-      } catch (error) {
-        console.error("Failed to parse user data", error);
-        fetchUserFromAuth();
-      }
-    } else {
-      fetchUserFromAuth();
-    }
+    useEffect(() => {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            try {
+                const customer = JSON.parse(userData);
+                setUserData({
+                    id: customer.id,
+                    name: customer.name,
+                    email: customer.email,
+                    phone: customer.phone
+                });
+            } catch (error) {
+                console.error('Failed to parse user data', error);
+                fetchUserFromAuth();
+            }
+        } else {
+            fetchUserFromAuth();
+        }
 
-    const savedCompareList = localStorage.getItem("compareList");
-    if (savedCompareList) {
-      try {
-        setCompareList(JSON.parse(savedCompareList));
-      } catch (error) {
-        console.error("Failed to parse compare list", error);
-      }
-    }
-  }, [fetchUserFromAuth]);
+        const savedCompareList = localStorage.getItem('compareList');
+        if (savedCompareList) {
+            try {
+                setCompareList(JSON.parse(savedCompareList));
+            } catch (error) {
+                console.error('Failed to parse compare list', error);
+            }
+        }
+    }, [fetchUserFromAuth]);
 
   const addToCompare = (propertyToAdd: Property) => {
     const savedCompareList = localStorage.getItem("compareList");
@@ -495,123 +495,86 @@ export default function DetailPage() {
     );
   }
 
-  if (!property) return <div>Property not found</div>;
+    if (!property) return <div>Property not found</div>;
 
-  return (
-    <div className="bg-[#f8f4f0] px-6 py-10">
-      <div className="absolute bg-black top-0 left-0 w-full z-20">
-        <Navbar />
-      </div>
-
-      {/* Main Property Details - Always visible (above fold) */}
-      <div className="w-full max-w-[92%] mx-auto mt-20 bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
-        <div className="px-6 pt-6 md:px-10">
-          <p className="text-sm font-sm text-gray-800">
-            {property.flat} Flat For Sale in {property.project},{" "}
-            <span className="underline font-semibold text-gray-900">
-              {property.location}
-            </span>
-          </p>
-        </div>
-
-        <div className="flex flex-col md:flex-row">
-          <div className="md:w-1/2 mt-3 p-4">
-            <Image
-              src={property.image}
-              alt={property.name}
-              width={1200}
-              height={800}
-              className="w-full h-[400px] object-cover rounded-xl"
-            />
-          </div>
-
-          <div className="p-6 md:p-8 text-black md:w-1/2 flex flex-col justify-center">
-            <div className="flex items-center gap-6 bg-gray-100 px-4 py-3 rounded-md mb-3 text-xs md:text-sm font-medium text-gray-700">
-              <div className="flex items-center gap-2">
-                <span className="text-black font-bold"> 🛏️ bedrooms</span>{" "}
-                {property.bedrooms}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-black font-bold"> 🛁 bathrooms</span>{" "}
-                {property.bathrooms}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-black font-bold"> 🏡 balconies</span>{" "}
-                {property.balconies}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-black font-bold"> 🪟 furnishing</span>{" "}
-                {property.furnishing}
-              </div>
+    return (
+        <div className="bg-[#f8f4f0] px-6 py-10">
+            <div className="absolute bg-black top-0 left-0 w-full z-20">
+                <Navbar />
             </div>
 
-            <div className="mb-4">
-              <h1 className="text-2xl font-bold text-gray-900">
-                ₹{" "}
-                {Number(
-                  String(property.price).replace(/[^0-9.-]/g, "")
-                ).toLocaleString("en-IN")}
-              </h1>
+            {/* Main Property Details - Always visible (above fold) */}
+            <div className="w-full max-w-[92%] mx-auto mt-20 bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
+                <div className="px-6 pt-6 md:px-10">
+                    <p className="text-sm font-sm text-gray-800">
+                        {property.flat} Flat For Sale in {property.project},{" "}
+                        <span className="underline font-semibold text-gray-900">{property.location}</span>
+                    </p>
+                </div>
 
-              <div className="text-sm text-blue-600 font-medium flex gap-2 mt-1">
-                <span>
-                  EMI - ₹{Number(property.emi).toLocaleString("en-IN")}
-                </span>
-                <span>|</span>
-                <span className="underline cursor-pointer">
-                  Need Home Loan? Check Eligibility
-                </span>
-              </div>
-            </div>
+                <div className="flex flex-col md:flex-row">
+                    <div className="md:w-1/2 mt-3 p-4">
+                        <Image
+                            src={property.image}
+                            alt={property.name}
+                            width={1200}
+                            height={800}
+                            className="w-full h-[400px] object-cover rounded-xl"
+                        />
+                    </div>
 
-            <p className="text-lg font-medium mb-2">
-              {property.name} in{" "}
-              <span className="underline font-semibold">
-                {property.address}
-              </span>
-            </p>
+                    <div className="p-6 md:p-8 text-black md:w-1/2 flex flex-col justify-center">
+                        <div className="flex items-center gap-6 bg-gray-100 px-4 py-3 rounded-md mb-3 text-xs md:text-sm font-medium text-gray-700">
+                            <div className="flex items-center gap-2">
+                                <span className="text-black font-bold"> 🛏️ bedrooms</span> {property.bedrooms}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-black font-bold"> 🛁 bathrooms</span> {property.bathrooms}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-black font-bold"> 🏡 balconies</span> {property.balconies}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-black font-bold"> 🪟 furnishing</span> {property.furnishing}
+                            </div>
+                        </div>
 
-            <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-sm text-gray-800 mt-4">
-              <div>
-                <strong>Carpet Area:</strong> {property.carpet_area}
-              </div>
-              <div>
-                <strong>Project:</strong> {property.project}
-              </div>
-              <div>
-                <strong>Floor:</strong> {property.floor}
-              </div>
-              <div>
-                <strong>Transaction Type:</strong> {property.transaction_type}
-              </div>
-              <div>
-                <strong>Status:</strong> {property.status}
-              </div>
-              <div>
-                <strong>Facing:</strong> {property.facing}
-              </div>
-              <div>
-                <strong>Lifts:</strong> {property.lifts}
-              </div>
-              <div>
-                <strong>Furnished:</strong> {property.furnishing}
-              </div>
-            </div>
+                        <div className="mb-4">
+                            <h1 className="text-2xl font-bold text-gray-900"> ₹{(property.price).toLocaleString("en-IN")} </h1>
+                            <div className="text-sm text-blue-600 font-medium flex gap-2 mt-1">
+                                <span>EMI - ₹{Number(property.emi).toLocaleString("en-IN")}</span>
+                                <span>|</span>
+                                <span className="underline cursor-pointer">Need Home Loan? Check Eligibility</span>
+                            </div>
+                        </div>
+
+                        <p className="text-lg font-medium mb-2">{property.name} in <span className="underline font-semibold">{property.address}</span></p>
+
+                        <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-sm text-gray-800 mt-4">
+                            <div><strong>Carpet Area:</strong> {property.carpet_area}</div>
+                            <div><strong>Project:</strong> {property.project}</div>
+                            <div><strong>Floor:</strong> {property.floor}</div>
+                            <div><strong>Transaction Type:</strong> {property.transaction_type}</div>
+                            <div><strong>Status:</strong> {property.status}</div>
+                            <div><strong>Facing:</strong> {property.facing}</div>
+                            <div><strong>Lifts:</strong> {property.lifts}</div>
+                            <div><strong>Furnished:</strong> {property.furnishing}</div>
+                        </div>
 
             <hr className="mt-3" />
 
-            <div className="mt-6 flex items-center justify-between">
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setIsInquiryModalOpen(true)}
-                  className="bg-black text-white cursor-pointer font-semibold px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
-                >
-                  Raise Inquiry
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+                        <div className="mt-6 flex items-center justify-between">
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setIsInquiryModalOpen(true)}
+                                    className="bg-black text-white cursor-pointer font-semibold px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
+                                >
+                                    Raise Inquiry
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
         {/* Lazy loaded Property Gallery */}
         <Suspense fallback={<LoadingSection />}>
@@ -626,37 +589,15 @@ export default function DetailPage() {
       <div className="w-full max-w-[92%] mx-auto mt-10 bg-white rounded-xl p-6 md:p-10 shadow">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">More Details</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 text-gray-800">
-          <div>
-            <strong>Price Breakup:</strong>&nbsp;₹
-            {Number(property.price_breakup).toLocaleString("en-IN")} | ₹
-            {Number(property.emi).toLocaleString("en-IN")}
-          </div>
-          <div>
-            <strong>Booking Amount:</strong>&nbsp;₹
-            {Number(property.booking_amount).toLocaleString("en-IN")}
-          </div>
-          <div>
-            <strong>Address:</strong>{" "}
-            <span className="">{property.location}</span>
-          </div>
-          <div>
-            <strong>Landmarks:</strong>{" "}
-            <span className="">{property.landmarks}</span>
-          </div>
-          <div>
-            <strong>Furnishing:</strong>{" "}
-            <span className="">{property.furnishing}</span>
-          </div>
-          <div>
-            <strong>Flooring:</strong>{" "}
-            <span className="">{property.flooring}</span>
-          </div>
-          <div>
-            <strong>Overlooking:</strong>{" "}
-            <span className="">{property.overlooking}</span>
-          </div>
-        </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 text-gray-800">
+                    <div><strong>Price Breakup:</strong>&nbsp;₹{Number(property.price_breakup).toLocaleString("en-IN")} | ₹{Number(property.emi).toLocaleString("en-IN")}</div>
+                    <div><strong>Booking Amount:</strong>&nbsp;₹{Number(property.booking_amount).toLocaleString("en-IN")}</div>
+                    <div><strong>Address:</strong> <span className="">{property.address}</span></div>
+                    <div><strong>Landmarks:</strong> <span className="">{property.landmarks}</span></div>
+                    <div><strong>Furnishing:</strong> <span className="">{property.furnishing}</span></div>
+                    <div><strong>Flooring:</strong> <span className="">{property.flooring}</span></div>
+                    <div><strong>Overlooking:</strong> <span className="">{property.overlooking}</span></div>
+                </div>
 
         <div className="mt-6 bg-yellow-100 border border-yellow-400 text-yellow-900 px-4 py-2 rounded-md flex items-center justify-between">
           <span className="font-bold mr-2 bg-yellow-300 px-2 py-1 rounded">
@@ -667,76 +608,54 @@ export default function DetailPage() {
           </span>
         </div>
 
-        <div className="mt-6 text-gray-800">
-          <p className="text-red-600 font-medium underline cursor-pointer mb-2">
-            View all details
-          </p>
-          <p>
-            <strong>Description:</strong>
-            {property.description}
-          </p>
-        </div>
+                <div className="mt-6 text-gray-800">
+                    <p className="text-red-600 font-medium underline cursor-pointer mb-2">View all details</p>
+                    <p>
+                        <strong>Description:</strong>{property.description}
+                    </p>
+                </div>
 
-        <div className="mt-6 flex gap-4 flex-wrap">
-          <button className="group bg-red-600 cursor-pointer text-white font-semibold px-4 py-2 rounded-md hover:bg-red-700 relative overflow-hidden">
-            <span className="block group-hover:hidden">Contact Owner</span>
-            <span className="hidden group-hover:block">
-              {property.owner_contact}
-            </span>
-          </button>
-        </div>
-      </div>
+                <div className="mt-6 flex gap-4 flex-wrap">
+                    <button className="group bg-red-600 cursor-pointer text-white font-semibold px-4 py-2 rounded-md hover:bg-red-700 relative overflow-hidden">
+                        <span className="block group-hover:hidden">Contact Owner</span>
+                        <span className="hidden group-hover:block">{property.owner_contact}</span>
+                    </button>
+                </div>
+            </div>
 
       {/* About Project Section */}
       <div className="w-full max-w-[92%] mx-auto mt-10 bg-white rounded-xl p-6 md:p-10 shadow">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">About Project</h2>
 
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-4">
-            <Image
-              src={property.image}
-              alt={property.name}
-              width={80}
-              height={80}
-              className="rounded-lg object-cover"
-            />
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {property.project}
-              </h3>
-              <p className="text-sm text-gray-600">
-                Price:{" "}
-                <span className="font-medium">
-                  ₹
-                  {Number(
-                    String(property.price).replace(/[^0-9.-]/g, "")
-                  ).toLocaleString("en-IN")}
-                </span>
-              </p>
+                <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div className="flex items-center gap-4">
+                        <Image
+                            src={property.image}
+                            alt={property.name}
+                            width={80}
+                            height={80}
+                            className="rounded-lg object-cover"
+                        />
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900">{property.project}</h3>
+                            <p className="text-sm text-gray-600">Price: <span className="font-medium">₹{Number(property.price).toLocaleString("en-IN")}</span></p>
+                            <p className="text-sm text-gray-600">Configuration: <span className="font-medium">{property.flat} flats</span></p>
+                        </div>
+                    </div>
 
-              <p className="text-sm text-gray-600">
-                Configuration:{" "}
-                <span className="font-medium">{property.flat} flats</span>
-              </p>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={handleCompareProjects}
+                            className="border px-4 py-2 cursor-pointer rounded-full font-medium text-gray-700 hover:bg-gray-100"
+                        >
+                            Compare Projects
+                        </button>
+                        <Link href="/comparison" className="border px-4 py-2 cursor-pointer rounded-full font-medium text-gray-700 hover:bg-gray-100">
+                            View Comparison ({compareList.length})
+                        </Link>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <div className="flex gap-3">
-            <button
-              onClick={handleCompareProjects}
-              className="border px-4 py-2 cursor-pointer rounded-full font-medium text-gray-700 hover:bg-gray-100"
-            >
-              Compare Projects
-            </button>
-            <Link
-              href="/comparison"
-              className="border px-4 py-2 cursor-pointer rounded-full font-medium text-gray-700 hover:bg-gray-100"
-            >
-              View Comparison ({compareList.length})
-            </Link>
-          </div>
-        </div>
-      </div>
 
       {/* Lazy loaded sections */}
       <Suspense fallback={<LoadingSection />}>
@@ -893,60 +812,50 @@ export default function DetailPage() {
         </div>
       </div>
 
-      {/* Comparison Sticky Bar */}
-      {compareList.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 z-30">
-          <div className="flex justify-between items-center max-w-6xl mx-auto">
-            <div className="flex items-center gap-4">
-              <span className="font-semibold">
-                Compare Properties ({compareList.length}/3)
-              </span>
-              <div className="flex gap-2">
-                {compareList.map((comp, index) => (
-                  <div
-                    key={comp.id}
-                    className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs"
-                  >
-                    <span>{comp.name.substring(0, 15)}...</span>
-                    <button
-                      onClick={() => {
-                        const updatedCompareList = compareList.filter(
-                          (p) => p.id !== comp.id
-                        );
-                        setCompareList(updatedCompareList);
-                        localStorage.setItem(
-                          "compareList",
-                          JSON.stringify(updatedCompareList)
-                        );
-                      }}
-                      className="text-red-500 cursor-pointer hover:text-red-700"
-                    >
-                      <X size={12} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setCompareList([]);
-                  localStorage.removeItem("compareList");
-                }}
-                className="text-sm text-gray-600 cursor-pointer hover:text-gray-800"
-              >
-                Clear All
-              </button>
-              <Link
-                href="/comparison"
-                className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
-              >
-                Compare Now
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
+            {/* Comparison Sticky Bar */}
+            {compareList.length > 0 && (
+                <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 z-30">
+                    <div className="flex justify-between items-center max-w-6xl mx-auto">
+                        <div className="flex items-center gap-4">
+                            <span className="font-semibold">Compare Properties ({compareList.length}/3)</span>
+                            <div className="flex gap-2">
+                                {compareList.map((comp, index) => (
+                                    <div key={comp.id} className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">
+                                        <span>{comp.name.substring(0, 15)}...</span>
+                                        <button
+                                            onClick={() => {
+                                                const updatedCompareList = compareList.filter(p => p.id !== comp.id);
+                                                setCompareList(updatedCompareList);
+                                                localStorage.setItem('compareList', JSON.stringify(updatedCompareList));
+                                            }}
+                                            className="text-red-500 cursor-pointer hover:text-red-700"
+                                        >
+                                            <X size={12} />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => {
+                                    setCompareList([]);
+                                    localStorage.removeItem('compareList');
+                                }}
+                                className="text-sm text-gray-600 cursor-pointer hover:text-gray-800"
+                            >
+                                Clear All
+                            </button>
+                            <Link
+                                href="/comparison"
+                                className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
+                            >
+                                Compare Now
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            )}
 
       {/* Inquiry Modal */}
       <Suspense fallback={null}>

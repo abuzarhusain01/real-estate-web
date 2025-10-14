@@ -51,6 +51,24 @@ function CompareIcon({
     );
 }
 
+// Helper to handle numbers, lakh, crore inputs
+const formatPrice = (price: string | number) => {
+    if (typeof price === "number") return price.toLocaleString("en-IN");
+
+    let numPrice = 0;
+    const lowerPrice = price.toString().toLowerCase().trim();
+
+    if (lowerPrice.includes("lakh")) {
+        numPrice = parseFloat(lowerPrice.replace("lakh", "").trim()) * 100000;
+    } else if (lowerPrice.includes("crore")) {
+        numPrice = parseFloat(lowerPrice.replace("crore", "").trim()) * 10000000;
+    } else {
+        numPrice = parseFloat(lowerPrice);
+    }
+
+    return isNaN(numPrice) ? "0" : numPrice.toLocaleString("en-IN");
+};
+
 export default function OtherProperties({ nearbyProperties, onAddToCompare }: OtherPropertiesProps) {
     const [hoveredCompareButton, setHoveredCompareButton] = useState<string | null>(null);
 
@@ -61,12 +79,12 @@ export default function OtherProperties({ nearbyProperties, onAddToCompare }: Ot
             </h2>
 
             <div className="overflow-x-auto">
-                <div className="flex gap-6 w-max pb-2">
+                <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
                     {nearbyProperties.slice(0, 5).map((nearbyProp) => (
                         <Link
                             key={`nearby-${nearbyProp.id}`}
                             href={`/properties/detail/${nearbyProp.id}`}
-                            className="bg-white rounded-lg shadow p-4 min-w-[280px] transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                            className="bg-white rounded-lg shadow p-4 flex-shrink-0 w-[85%] sm:w-[280px] md:w-[300px] snap-center transition-transform duration-300 hover:scale-105 hover:shadow-lg"
                         >
                             <Image
                                 src={nearbyProp.image}
@@ -76,7 +94,7 @@ export default function OtherProperties({ nearbyProperties, onAddToCompare }: Ot
                                 className="rounded-xl h-40 w-full object-cover mb-3"
                             />
                             <p className="text-sm font-medium">{nearbyProp.name}</p>
-                            <p className="text-gray-700 font-semibold">₹{Number(nearbyProp.price).toLocaleString("en-IN")} | {nearbyProp.carpet_area}</p>
+                            <p className="text-gray-700 font-semibold">  ₹{formatPrice(nearbyProp.price)} | {nearbyProp.carpet_area}</p>
                             <p className="text-gray-600 text-sm">{nearbyProp.address}</p>
                             <p className="text-gray-500 text-xs">{nearbyProp.status}</p>
                             <div className="flex justify-end ">
