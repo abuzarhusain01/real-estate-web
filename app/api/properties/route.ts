@@ -60,7 +60,7 @@ export async function GET(request: Request) {
 
         const properties = rawProperties.map((property: any) => ({
             ...property,
-            images: property.images ? JSON.parse(property.images) : [],
+            images: property.images ?? [],
             is_featured: property.is_featured === 1,
             is_hotspot: property.is_hotspot === 1,
             is_favourites: property.is_favourites === 1,

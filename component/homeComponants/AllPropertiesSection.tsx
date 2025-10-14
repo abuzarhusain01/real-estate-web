@@ -26,7 +26,7 @@ function deriveCities(list: Property[]): string[] {
 }
 
 const FALLBACK_CITIES = [
-  "Mumbai","Bangalore","Delhi","Gurgaon","Pune","Noida","Hyderabad",
+  "Mumbai", "Bangalore", "Delhi", "Gurgaon", "Pune", "Noida", "Hyderabad",
 ];
 
 /** Lightweight in-view gate: only mount children when visible */
@@ -62,7 +62,7 @@ const AllPropertiesSection: React.FC<AllPropertiesSectionProps> = ({
   // Cities with an "All" tab at the beginning
   const cities = useMemo(() => {
     const fromData = deriveCities(allProperties);
-    const base = fromData.length ? fromData : FALLBACK_CITIES;
+    const base = fromData?.length ? fromData : FALLBACK_CITIES;
     return ["All", ...base];
   }, [allProperties]);
 
@@ -112,9 +112,8 @@ const AllPropertiesSection: React.FC<AllPropertiesSectionProps> = ({
               <button
                 key={c}
                 onClick={() => setActiveCity(c)}
-                className={`px-4 py-2 rounded-full text-sm border transition ${
-                  isActive ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-800 border-gray-300 hover:bg-gray-50"
-                }`}
+                className={`px-4 py-2 rounded-full text-sm border transition ${isActive ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-800 border-gray-300 hover:bg-gray-50"
+                  }`}
                 aria-pressed={isActive}
               >
                 {c}
@@ -131,28 +130,28 @@ const AllPropertiesSection: React.FC<AllPropertiesSectionProps> = ({
           >
             {(propertiesLoading)
               ? Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="min-w-[320px]" style={{ contentVisibility: "auto" as any }}>
-                    <PropertySkeleton />
-                  </div>
-                ))
+                <div key={i} className="min-w-[320px]" style={{ contentVisibility: "auto" as any }}>
+                  <PropertySkeleton />
+                </div>
+              ))
               : filtered.map((property) => (
-                  <InView key={property.id} root={scrollerRef.current}>
-                   
-                    <Link
-                      href={`/properties/detail/${property.id}`}
-                      prefetch={false}
-                      className="block"
-                    >
-                      {/* PropertyCard should be React.memo; images should lazy-load inside */}
-                      <div style={{ contentVisibility: "auto" as any }}>
-                        <PropertyCard
-                          property={property}
-                          handleFavorite={handleFavorite}
-                        />
-                      </div>
-                    </Link>
-                  </InView>
-                ))}
+                <InView key={property.id} root={scrollerRef.current}>
+
+                  <Link
+                    href={`/properties/detail/${property.id}`}
+                    prefetch={false}
+                    className="block"
+                  >
+                    {/* PropertyCard should be React.memo; images should lazy-load inside */}
+                    <div style={{ contentVisibility: "auto" as any }}>
+                      <PropertyCard
+                        property={property}
+                        handleFavorite={handleFavorite}
+                      />
+                    </div>
+                  </Link>
+                </InView>
+              ))}
           </div>
           <button
             aria-label="Scroll left"
