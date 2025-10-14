@@ -49,7 +49,7 @@ const PropertyCard = React.memo(({ property, handleFavorite }: PropertyCardProps
             <p className="text-sm text-black uppercase">{property.location}</p>
             <h3 className="mt-2 text-xl font-semibold text-gray-900">{property.name}</h3>
             <p className="mt-1 text-gray-600 text-sm">{property.description}</p>
-            <p className="mt-3 text-teal-600 text-lg font-bold">₹{Number(property.price).toLocaleString("en-IN")}</p>
+            <p className="mt-3 text-teal-600 text-lg font-bold">₹{(property.price).toLocaleString("en-IN")}</p>
         </div>
     </div>
 ));

@@ -3,7 +3,7 @@ export type Property = {
     image: string;
     name: string;
     description: string;
-    price: number;
+     price: number | string; 
     owner_name: string;
     location: string;
     owner_contact: string;
