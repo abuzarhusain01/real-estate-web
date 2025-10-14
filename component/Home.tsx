@@ -45,7 +45,7 @@ type Customer = {
     email: string;
 };
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 50;
 
 const TestimonialCard = React.memo(({ review }: { review: Review }) => (
     <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
@@ -204,7 +204,7 @@ export default function Properties() {
             ]);
 
             if (!featuredRes.ok || !allRes.ok) {
-                throw new Error('Failed to fetch properties');
+                console.error('Failed to fetch properties');
             }
 
             const [featuredData, allData] = await Promise.all([
@@ -371,7 +371,7 @@ export default function Properties() {
             </Suspense>
 
             {/* Featured Properties */}
-            <Suspense fallback={<div className="animate-pulse h-96 bg-gray-200"></div>}>
+            {/* <Suspense fallback={<div className="animate-pulse h-96 bg-gray-200"></div>}>
                 <FeaturedPropertiesSection
                     featuredProperties={featuredProperties}
                     propertiesLoading={propertiesLoading}
@@ -380,7 +380,7 @@ export default function Properties() {
                     setFeaturedCurrentPage={setFeaturedCurrentPage}
                     handleFavorite={handleFavorite}
                 />
-            </Suspense>
+            </Suspense> */}
 
             {/* All Properties with Pagination */}
             <Suspense fallback={<div className="animate-pulse h-96 bg-gray-200"></div>}>

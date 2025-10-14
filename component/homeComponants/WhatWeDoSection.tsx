@@ -25,7 +25,7 @@ const services = [
 
 const WhatWeDoSection = () => {
     return (
-        <div className="bg-white px-6 py-10 md:px-10 max-w-[92%] md:py-25 mx-auto rounded-2xl text-center">
+        <div className="bg-white px-6 py-10 md:px-10 max-w-[92%] md:py-25 mx-auto rounded-2xl text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-sans text-black mb-4">What We Do</h2>
             <p className="text-gray-500 max-w-2xl mx-auto mb-10">
                 Simplifying the journey of buying, selling, and renting properties. Our expert

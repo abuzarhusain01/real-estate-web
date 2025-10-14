@@ -218,7 +218,7 @@ export default function Chat({ messages = [], setMessages = () => { } }) {
                                     {comparisonProperties.map(property => (
                                         <td key={property.id} className="border p-2 text-center">
                                             {propertyDetails[property.id] ?
-                                                `₹${Number(propertyDetails[property.id].price).toLocaleString("en-IN")}` :
+                                                `₹${(propertyDetails[property.id].price).toLocaleString("en-IN")}` :
                                                 "Loading..."
                                             }
                                         </td>

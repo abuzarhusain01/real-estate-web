@@ -76,7 +76,7 @@ export default function PropertiesSection({ filters, onFilteredCountChange }: Pr
     }) => {
         const [imageLoaded, setImageLoaded] = useState(false);
         const [imageError, setImageError] = useState(false);
-
+       console.log(property,"property is::");
         return (
             <div className="w-full rounded-xl transition-transform duration-200 hover:scale-105 hover:shadow-xl">
 
