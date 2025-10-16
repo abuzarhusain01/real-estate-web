@@ -44,7 +44,7 @@ export default function PropertyGallery({ images, propertyName }: PropertyGaller
                             className="bg-white rounded-xl shadow p-2 flex-shrink-0 w-[85%] sm:w-[280px] md:w-[300px] snap-center transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
                             onClick={() => openModal(idx)}
                         >
-                            <Image
+                            <img
                                 src={img}
                                 alt={`${propertyName} - Image ${idx + 1}`}
                                 width={300}
@@ -84,7 +84,7 @@ export default function PropertyGallery({ images, propertyName }: PropertyGaller
                     )}
 
                     <div className="relative max-w-7xl max-h-full mx-4">
-                        <Image
+                        <img
                             src={images[currentImageIndex]}
                             alt={`${propertyName} - Image ${currentImageIndex + 1}`}
                             width={1200}

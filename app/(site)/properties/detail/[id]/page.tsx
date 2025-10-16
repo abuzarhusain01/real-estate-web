@@ -527,7 +527,7 @@ export default function DetailPage() {
 
         <div className="flex flex-col md:flex-row">
           <div className="w-full md:w-1/2 mt-3 p-4">
-            <Image
+            <img
               src={property.image}
               alt={property.name}
               width={1200}
@@ -694,7 +694,7 @@ export default function DetailPage() {
 
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full md:w-auto">
-            <Image
+            <img
               src={property.image}
               alt={property.name}
               width={80}
