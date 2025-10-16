@@ -91,7 +91,7 @@ export default function VerifiedProperties({
                                 href={`/properties/detail/${verifiedProp.id}`}
                                 className="bg-white rounded-lg shadow p-4 flex-shrink-0 w-[85%] sm:w-[280px] md:w-[300px] snap-center transition-transform duration-300 hover:scale-105 hover:shadow-lg"
                             >
-                                <Image
+                                <img
                                     src={verifiedProp.image}
                                     alt={verifiedProp.name}
                                     width={300}
@@ -121,7 +121,7 @@ export default function VerifiedProperties({
                                 key={`verified-fallback-${index}`}
                                 className="bg-white rounded-lg shadow p-4 min-w-[280px] transition-transform duration-300 hover:scale-105 hover:shadow-lg"
                             >
-                                <Image
+                                <img
                                     src={fallbackProperty.image}
                                     alt={fallbackProperty.name}
                                     width={300}

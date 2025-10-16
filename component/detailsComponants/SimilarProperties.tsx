@@ -127,7 +127,7 @@ export default function SimilarProperties({
                         href={`/properties/detail/${prod.id}`}
                         className="bg-white text-black p-3 sm:p-4 rounded-xl shadow transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-gray-50 flex flex-col"
                     >
-                        <Image
+                        <img
                             src={prod.image}
                             alt={prod.name}
                             width={200}

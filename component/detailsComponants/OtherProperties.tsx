@@ -86,7 +86,7 @@ export default function OtherProperties({ nearbyProperties, onAddToCompare }: Ot
                             href={`/properties/detail/${nearbyProp.id}`}
                             className="bg-white rounded-lg shadow p-4 flex-shrink-0 w-[85%] sm:w-[280px] md:w-[300px] snap-center transition-transform duration-300 hover:scale-105 hover:shadow-lg"
                         >
-                            <Image
+                            <img
                                 src={nearbyProp.image}
                                 alt={nearbyProp.name}
                                 width={300}
