@@ -17,8 +17,9 @@ const nextConfig: NextConfig = {
       },
     ],
     domains: [
+      "newprojects.99acres.com",
       "fastly.picsum.photos",
-      "encrypted-tbn0.gstatic.com", 
+      "encrypted-tbn0.gstatic.com",
     ],
   },
 };
